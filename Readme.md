@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александр Санников](https://up.htmlacademy.ru/javascript/9/user/287231).
-* Наставник: [Алексей Дмитриев] (https://htmlacademy.ru/profile/id245991) .
+* Наставник: [Алексей Дмитриев](https://htmlacademy.ru/profile/id245991).
 
 ---
 
