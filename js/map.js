@@ -29,8 +29,9 @@ var getSampleFromArray = function (array) {
     for (var j = 0; j < list.length; j++) {
       if (object === list[j]) {
         return true;
+      } else {
+        return false;
       }
-      return false;
     }
   };
 
@@ -84,13 +85,13 @@ for (var i = 0; i < titles.length; i++) {
       'x': locations[i].x + 28,
       'y': locations[i].y + 75
     }
-  }
+  };
 }
 
 var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 var fragment = document.createDocumentFragment();
 
-for (var i = 0; i < announcements.length; i++) {
+for (i = 0; i < announcements.length; i++) {
   var pin = document.createElement('div');
 
   pin.className = 'pin';
@@ -103,7 +104,6 @@ tokyoPinMap.appendChild(fragment);
 
 var template = document.getElementById('lodge-template');
 var element = template.content.cloneNode(true);
-var templateElements = element.children[0].children;
 
 var templateType = function () {
   if (announcements[0].offer.type === 'flat') {
