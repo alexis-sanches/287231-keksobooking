@@ -29,10 +29,8 @@ var getSampleFromArray = function (array) {
     for (var j = 0; j < list.length; j++) {
       if (object === list[j]) {
         return true;
-      } else {
-        return false;
       }
-    }
+    return false;
   };
 
   var sample = [];
