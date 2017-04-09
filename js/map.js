@@ -13,26 +13,22 @@ var types = ['flat', 'house', 'bungalo'];
 var checkTimes = ['12:00', '13:00', '14:00'];
 var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var announcements = [];
+var locations = [];
 
 var randomize = function(min, max) {
   var randomNumber = Math.floor(Math.random() * (max - min) + min);
   return randomNumber;
 };
 
-var locations = [];
-
-for (var i = 0; i < titles.length; i++) {
-  locations[i] = {'x': randomize(300, 900), 'y': randomize(100, 500)};
-}
-
 var randomArrayElement = function(array) {
   return array[randomize(0, array.length)];
 };
-/*
+
 var getSampleFromArray = function(array) {
+  debugger
   var contain = function(array, object) {
-    for (i = 0; i < array.length; i++) {
-      if (object === array[i]) {
+    for (var j = 0; j < array.length; j++) {
+      if (object === array[j]) {
         return true;
       }
       return false;
@@ -52,7 +48,7 @@ var getSampleFromArray = function(array) {
   }
   return sample;
 };
-*/
+
 var chooseType = function(index, array) {
   if (index === 0 || index === 1) {
     return array[0];
@@ -64,7 +60,8 @@ var chooseType = function(index, array) {
 };
 
 
-for (i = 0; i < titles.length; i++) {
+for (var i = 0; i < titles.length; i++) {
+  locations[i] = {'x': randomize(300, 900), 'y': randomize(100, 500)};
   announcements[i] = {
     'author': {
       'avatar': 'img/avatars/user0' + (i + 1) + '.png'
@@ -79,7 +76,7 @@ for (i = 0; i < titles.length; i++) {
       'guests': randomize(1, 10),
       'checkin': randomArrayElement(checkTimes),
       'checkout': randomArrayElement(checkTimes),
-      'features': ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+      'features': getSampleFromArray(featuresList),
       'description': '',
       'photos': []
     },
