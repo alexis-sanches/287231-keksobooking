@@ -20,7 +20,7 @@ var randomize = function (min, max) {
   return randomNumber;
 };
 
-var getrandomArrayElement = function (array) {
+var getRandomArrayElement = function (array) {
   return array[randomize(0, array.length)];
 };
 
@@ -38,7 +38,7 @@ var getSampleFromArray = function (array) {
   var sampleLength = randomize(1, array.length);
 
   for (var k = 0; k < sampleLength; k++) {
-    var currentObj = getrandomArrayElement(array);
+    var currentObj = getRandomArrayElement(array);
     if (!checkContain(sample, currentObj)) {
       sample[k] = currentObj;
     } else {
@@ -73,8 +73,8 @@ for (var i = 0; i < titles.length; i++) {
       'type': chooseType(i, types),
       'rooms': randomize(1, 5),
       'guests': randomize(1, 10),
-      'checkin': getrandomArrayElement(checkTimes),
-      'checkout': getrandomArrayElement(checkTimes),
+      'checkin': getRandomArrayElement(checkTimes),
+      'checkout': getRandomArrayElement(checkTimes),
       'features': getSampleFromArray(featuresList),
       'description': '',
       'photos': []
