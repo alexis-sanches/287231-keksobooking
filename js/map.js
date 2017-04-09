@@ -135,3 +135,4 @@ var dialogPanel = document.querySelector('.dialog__panel');
 
 document.querySelector('.dialog__title > img').setAttribute('src', announcements[0].author.avatar);
 offerDialog.replaceChild(element.children[0], dialogPanel);
+//
