@@ -69,16 +69,12 @@ var getTemplateType = function () {
   switch (firstAnnouncement.offer.type) {
     case 'flat':
       return 'Квартира';
-      break;
     case 'house':
       return 'Дом';
-      break;
     case 'bungalo':
       return 'Бунгало';
-      break;
     default:
       return 'Неизвестный тип';
-      break;
   }
 };
 
