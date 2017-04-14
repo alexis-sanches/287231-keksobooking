@@ -11,11 +11,11 @@ var PROPERTY_TITLES = [
   'Неуютное бунгало по колено в воде'
 ];
 
-var PROPERTY_TYPES = {
-  FLAT: 'flat',
-  HOUSE: 'house',
-  BUNGALO: 'bungalo'
-};
+var PROPERTY_TYPES = [
+  'flat',
+  'house',
+  'bungalo'
+];
 
 var PROPERTY_TYPE_TRANSLATIONS = {
   flat: 'Квартира',
@@ -116,7 +116,7 @@ function createRandomProperty(index) {
       title: title,
       address: location.x + ',' + location.y,
       price: getRandomNumber(PRICE_MIN, PRICE_MAX),
-      type: getPropertyTypeByTitle(title),
+      type: getRandomArrayElement(PROPERTY_TYPES),
       rooms: getRandomNumber(ROOM_NUMBER_MIN, ROOM_NUMBER_MAX),
       guests: getRandomNumber(GUESTS_NUMBER_MIN, GUESTS_NUMBER_MAX),
       checkin: getRandomArrayElement(PROPERTY_CHECK_TIMES),
