@@ -62,7 +62,7 @@ var pinContainer = document.querySelector('.tokyo__pin-map');
 
 init();
 
-function init () {
+function init() {
   var properties = createProperties(NUMBER_OF_PROPERTIES);
   var pins = createPins(properties);
 
@@ -70,13 +70,13 @@ function init () {
   renderFirstProperty(properties);
 }
 
-function renderFirstProperty (properties) {
-  var firstProperty = properties[ 0 ];
+function renderFirstProperty(properties) {
+  var firstProperty = properties[0];
 
   renderPropertyElement(firstProperty);
 }
 
-function createPins (properties) {
+function createPins(properties) {
   var pins = [];
 
   properties.forEach(function (property) {
@@ -88,7 +88,7 @@ function createPins (properties) {
   return pins;
 }
 
-function createProperties (numberOfProperties) {
+function createProperties(numberOfProperties) {
   var properties = [];
 
   for (var i = 0; i < numberOfProperties; i++) {
@@ -99,13 +99,13 @@ function createProperties (numberOfProperties) {
 
   return properties;
 }
-function createRandomProperty (index) {
+function createRandomProperty(index) {
   var location = {
     x: getRandomNumber(LOCATION_X_MIN, LOCATION_X_MAX),
     y: getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX)
   };
 
-  var title = PROPERTY_TITLES[ index ];
+  var title = PROPERTY_TITLES[index];
 
   return {
     author: {
@@ -128,7 +128,7 @@ function createRandomProperty (index) {
   };
 }
 
-function createPin (property) {
+function createPin(property) {
   var pin = document.createElement('div');
   var avatarImage = document.createElement('img');
 
@@ -147,26 +147,26 @@ function createPin (property) {
   return pin;
 }
 
-function renderPins (pinContainer, pinElements) {
+function renderPins(container, pinElements) {
   var fragment = document.createDocumentFragment();
 
   pinElements.forEach(function (element) {
     fragment.appendChild(element);
   });
 
-  pinContainer.appendChild(fragment);
+  container.appendChild(fragment);
 }
 
-function renderPropertyElement (property) {
+function renderPropertyElement(property) {
   var element = lodgeTemplate.content.cloneNode(true);
 
   element.querySelector('.lodge__title').textContent = property.offer.title;
   element.querySelector('.lodge__address').textContent = property.offer.address;
   element.querySelector('.lodge__price').textContent = property.offer.price + ' ₽/ночь';
-  element.querySelector('.lodge__type').textContent = PROPERTY_TYPE_TRANSLATIONS[ property.offer.type ]
+  element.querySelector('.lodge__type').textContent = PROPERTY_TYPE_TRANSLATIONS[property.offer.type];
   element.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + property.offer.guests + ' гостей в ' + property.offer.rooms + ' комнатах';
   element.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + property.offer.checkin + ', выезд до ' + property.offer.checkout;
-  element.querySelector('.lodge__features').appendChild(createFeaturesElement(property.offer.features))
+  element.querySelector('.lodge__features').appendChild(createFeaturesElement(property.offer.features));
   element.querySelector('.lodge__description').textContent = property.offer.description;
 
   document.querySelector('.dialog__title > img').setAttribute('src', property.author.avatar);
@@ -174,7 +174,7 @@ function renderPropertyElement (property) {
 
 }
 
-function createFeaturesElement (features) {
+function createFeaturesElement(features) {
   var fragment = document.createDocumentFragment();
 
   features.forEach(function (feature) {
@@ -187,7 +187,7 @@ function createFeaturesElement (features) {
   return fragment;
 }
 
-function getPropertyTypeByTitle (title) {
+function getPropertyTypeByTitle(title) {
   var lowerCaseTitle = title.toLowerCase();
 
   if (~lowerCaseTitle.indexOf('бунгало')) {
@@ -201,7 +201,7 @@ function getPropertyTypeByTitle (title) {
   return PROPERTY_TYPES.HOUSE;
 }
 
-function getRandomElementsFromArray (arr) {
+function getRandomElementsFromArray(arr) {
   var numberOfElements = getRandomNumber(1, arr.length);
   var arrayCopy = arr.slice();
 
@@ -210,21 +210,21 @@ function getRandomElementsFromArray (arr) {
   for (var i = 0; i < numberOfElements; i++) {
     var randomIndex = getRandomArrayIndex(arrayCopy);
 
-    newArray.push(arrayCopy[ randomIndex ]);
+    newArray.push(arrayCopy[randomIndex]);
     arrayCopy.splice(randomIndex, 1);
   }
 
   return newArray;
 }
 
-function getRandomNumber (min, max) {
+function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function getRandomArrayElement (array) {
-  return array[ getRandomArrayIndex(array) ];
+function getRandomArrayElement(array) {
+  return array[getRandomArrayIndex(array)];
 }
 
-function getRandomArrayIndex (array) {
+function getRandomArrayIndex(array) {
   return getRandomNumber(0, array.length);
 }
