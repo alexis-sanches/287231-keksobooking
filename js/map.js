@@ -187,20 +187,6 @@ function createFeaturesElement(features) {
   return fragment;
 }
 
-function getPropertyTypeByTitle(title) {
-  var lowerCaseTitle = title.toLowerCase();
-
-  if (~lowerCaseTitle.indexOf('бунгало')) {
-    return PROPERTY_TYPES.BUNGALO;
-  }
-
-  if (~lowerCaseTitle.indexOf('квартир')) {
-    return PROPERTY_TYPES.FLAT;
-  }
-
-  return PROPERTY_TYPES.HOUSE;
-}
-
 function getRandomElementsFromArray(arr) {
   var numberOfElements = getRandomNumber(1, arr.length);
   var arrayCopy = arr.slice();
