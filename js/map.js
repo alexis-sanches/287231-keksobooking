@@ -1,6 +1,6 @@
 'use strict';
 
-var titles = [
+var PROPERTY_TITLES = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
   'Огромный прекрасный дворец',
@@ -10,143 +10,221 @@ var titles = [
   'Уютное бунгало далеко от моря',
   'Неуютное бунгало по колено в воде'
 ];
-var types = ['flat', 'house', 'bungalo'];
-var checkTimes = ['12:00', '13:00', '14:00'];
-var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var announcements = [];
-var locations = [];
-var tokyoPinMap = document.querySelector('.tokyo__pin-map');
-var fragment = document.createDocumentFragment();
+
+var PROPERTY_TYPES = {
+  FLAT: 'flat',
+  HOUSE: 'house',
+  BUNGALO: 'bungalo'
+};
+
+var PROPERTY_TYPE_TRANSLATIONS = {
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало'
+};
+
+var PROPERTY_CHECK_TIMES = [
+  '12:00',
+  '13:00',
+  '14:00'
+];
+
+var PROPERTY_FEATURES = [
+  'wifi',
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner'
+];
+
+var PRICE_MIN = 1000;
+var PRICE_MAX = 1000000;
+
+var LOCATION_X_MIN = 300;
+var LOCATION_X_MAX = 900;
+
+var LOCATION_Y_MIN = 100;
+var LOCATION_Y_MAX = 500;
+
+var ROOM_NUMBER_MIN = 1;
+var ROOM_NUMBER_MAX = 5;
+
+var GUESTS_NUMBER_MIN = 1;
+var GUESTS_NUMBER_MAX = 10;
+
+var NUMBER_OF_PROPERTIES = 8;
+
+var lodgeTemplate = document.getElementById('lodge-template');
 var offerDialog = document.getElementById('offer-dialog');
 var dialogPanel = document.querySelector('.dialog__panel');
-var template = document.getElementById('lodge-template');
-var element = template.content.cloneNode(true);
-var firstAnnouncement;
+var pinContainer = document.querySelector('.tokyo__pin-map');
 
-var randomize = function (min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-};
+init();
 
-var getRandomArrayElement = function (array) {
-  return array[randomize(0, array.length)];
-};
+function init () {
+  var properties = createProperties(NUMBER_OF_PROPERTIES);
+  var pins = createPins(properties);
 
-var checkContain = function (list, object) {
-  for (var j = 0; j < list.length; j++) {
-    if (object === list[j]) {
-      return true;
-    }
+  renderPins(pinContainer, pins);
+  renderFirstProperty(properties);
+}
+
+function renderFirstProperty (properties) {
+  var firstProperty = properties[ 0 ];
+
+  renderPropertyElement(firstProperty);
+}
+
+function createPins (properties) {
+  var pins = [];
+
+  properties.forEach(function (property) {
+    var pin = createPin(property);
+
+    pins.push(pin);
+  });
+
+  return pins;
+}
+
+function createProperties (numberOfProperties) {
+  var properties = [];
+
+  for (var i = 0; i < numberOfProperties; i++) {
+    var property = createRandomProperty(i);
+
+    properties.push(property);
   }
-  return false;
-};
 
-var getSampleFromArray = function (array) {
-  var sample = [];
-  var sampleLength = randomize(1, array.length);
-
-  for (var k = 0; k < sampleLength; k++) {
-    var currentObj = getRandomArrayElement(array);
-    if (!checkContain(sample, currentObj)) {
-      sample[k] = currentObj;
-    } else {
-      k--;
-    }
-  }
-  return sample;
-};
-
-var chooseType = function (index, array) {
-  if (index === 0 || index === 1) {
-    return array[0];
-  } else if (index >= 2 && index <= 5) {
-    return array[1];
-  } else {
-    return array[3];
-  }
-};
-
-var getTemplateType = function () {
-  switch (firstAnnouncement.offer.type) {
-    case 'flat':
-      return 'Квартира';
-    case 'house':
-      return 'Дом';
-    case 'bungalo':
-      return 'Бунгало';
-    default:
-      return 'Неизвестный тип';
-  }
-};
-
-var getTemplateFeatures = function () {
-  var templateString = '';
-  for (i = 0; i < firstAnnouncement.offer.features.length; i++) {
-    templateString = templateString + '<span class=\'feature__image feature__image--' + (firstAnnouncement.offer.features[i]) + '\'></span>';
-  }
-  return templateString;
-};
-
-var createPin = function () {
-  for (i = 0; i < announcements.length; i++) {
-    var pin = document.createElement('div');
-    var avatarImage = document.createElement('img');
-    pin.className = 'pin';
-    pin.style.left = announcements[i].location.x + 'px';
-    pin.style.top = announcements[i].location.y + 'px';
-    avatarImage.className = 'rounded';
-    avatarImage.src = announcements[i].author.avatar;
-    avatarImage.width = '40';
-    avatarImage.height = '40';
-    pin.appendChild(avatarImage);
-    fragment.appendChild(pin);
-  }
-  return fragment;
-};
-
-for (var i = 0; i < titles.length; i++) {
-  locations[i] = {
-    x: randomize(300, 900),
-    y: randomize(100, 500)
+  return properties;
+}
+function createRandomProperty (index) {
+  var location = {
+    x: getRandomNumber(LOCATION_X_MIN, LOCATION_X_MAX),
+    y: getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX)
   };
 
-  announcements[i] = {
+  var title = PROPERTY_TITLES[ index ];
+
+  return {
     author: {
-      avatar: 'img/avatars/user0' + (i + 1) + '.png'
+      avatar: 'img/avatars/user0' + (index + 1) + '.png'
     },
-
     offer: {
-      title: titles[i],
-      address: locations[i].x + ', ' + locations[i].y,
-      price: randomize(1000, 1000000),
-      type: chooseType(i, types),
-      rooms: randomize(1, 5),
-      guests: randomize(1, 10),
-      checkin: getRandomArrayElement(checkTimes),
-      checkout: getRandomArrayElement(checkTimes),
-      features: getSampleFromArray(featuresList),
+      title: title,
+      address: location.x + ',' + location.y,
+      price: getRandomNumber(PRICE_MIN, PRICE_MAX),
+      type: getPropertyTypeByTitle(title),
+      rooms: getRandomNumber(ROOM_NUMBER_MIN, ROOM_NUMBER_MAX),
+      guests: getRandomNumber(GUESTS_NUMBER_MIN, GUESTS_NUMBER_MAX),
+      checkin: getRandomArrayElement(PROPERTY_CHECK_TIMES),
+      checkout: getRandomArrayElement(PROPERTY_CHECK_TIMES),
+      features: getRandomElementsFromArray(PROPERTY_FEATURES),
       description: '',
-      photos: []
+      photo: []
     },
-
-    location: {
-      x: locations[i].x,
-      y: locations[i].y
-    }
+    location: location
   };
 }
 
-firstAnnouncement = announcements[0];
+function createPin (property) {
+  var pin = document.createElement('div');
+  var avatarImage = document.createElement('img');
 
-tokyoPinMap.appendChild(createPin());
+  pin.className = 'pin';
 
-element.querySelector('.lodge__title').textContent = firstAnnouncement.offer.title;
-element.querySelector('.lodge__address').textContent = firstAnnouncement.offer.address;
-element.querySelector('.lodge__price').textContent = firstAnnouncement.offer.price + '₽/ночь';
-element.querySelector('.lodge__type').textContent = getTemplateType();
-element.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + firstAnnouncement.offer.guests + ' гостей в ' + firstAnnouncement.offer.rooms + ' комнатах';
-element.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + firstAnnouncement.offer.checkin + ', выезд до ' + firstAnnouncement.offer.checkout;
-element.querySelector('.lodge__features').innerHTML = getTemplateFeatures();
-element.querySelector('.lodge__description').textContent = firstAnnouncement.offer.description;
+  pin.style.left = property.location.x + 'px';
+  pin.style.top = property.location.y + 'px';
 
-document.querySelector('.dialog__title > img').setAttribute('src', firstAnnouncement.author.avatar);
-offerDialog.replaceChild(element.children[0], dialogPanel);
+  avatarImage.className = 'rounded';
+  avatarImage.src = property.author.avatar;
+  avatarImage.width = 40;
+  avatarImage.height = 40;
+
+  pin.appendChild(avatarImage);
+
+  return pin;
+}
+
+function renderPins (pinContainer, pinElements) {
+  var fragment = document.createDocumentFragment();
+
+  pinElements.forEach(function (element) {
+    fragment.appendChild(element);
+  });
+
+  pinContainer.appendChild(fragment);
+}
+
+function renderPropertyElement (property) {
+  var element = lodgeTemplate.content.cloneNode(true);
+
+  element.querySelector('.lodge__title').textContent = property.offer.title;
+  element.querySelector('.lodge__address').textContent = property.offer.address;
+  element.querySelector('.lodge__price').textContent = property.offer.price + ' ₽/ночь';
+  element.querySelector('.lodge__type').textContent = PROPERTY_TYPE_TRANSLATIONS[ property.offer.type ]
+  element.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + property.offer.guests + ' гостей в ' + property.offer.rooms + ' комнатах';
+  element.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + property.offer.checkin + ', выезд до ' + property.offer.checkout;
+  element.querySelector('.lodge__features').appendChild(createFeaturesElement(property.offer.features))
+  element.querySelector('.lodge__description').textContent = property.offer.description;
+
+  document.querySelector('.dialog__title > img').setAttribute('src', property.author.avatar);
+  offerDialog.replaceChild(element, dialogPanel);
+
+}
+
+function createFeaturesElement (features) {
+  var fragment = document.createDocumentFragment();
+
+  features.forEach(function (feature) {
+    var featureElement = document.createElement('span');
+    featureElement.classList.add('feature__image');
+    featureElement.classList.add('feature__image--' + feature);
+    fragment.appendChild(featureElement);
+  });
+
+  return fragment;
+}
+
+function getPropertyTypeByTitle (title) {
+  var lowerCaseTitle = title.toLowerCase();
+
+  if (~lowerCaseTitle.indexOf('бунгало')) {
+    return PROPERTY_TYPES.BUNGALO;
+  }
+
+  if (~lowerCaseTitle.indexOf('квартир')) {
+    return PROPERTY_TYPES.FLAT;
+  }
+
+  return PROPERTY_TYPES.HOUSE;
+}
+
+function getRandomElementsFromArray (arr) {
+  var numberOfElements = getRandomNumber(1, arr.length);
+  var arrayCopy = arr.slice();
+
+  var newArray = [];
+
+  for (var i = 0; i < numberOfElements; i++) {
+    var randomIndex = getRandomArrayIndex(arrayCopy);
+
+    newArray.push(arrayCopy[ randomIndex ]);
+    arrayCopy.splice(randomIndex, 1);
+  }
+
+  return newArray;
+}
+
+function getRandomNumber (min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+function getRandomArrayElement (array) {
+  return array[ getRandomArrayIndex(array) ];
+}
+
+function getRandomArrayIndex (array) {
+  return getRandomNumber(0, array.length);
+}
