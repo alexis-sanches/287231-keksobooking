@@ -99,6 +99,7 @@ function createProperties(numberOfProperties) {
 
   return properties;
 }
+
 function createRandomProperty(index) {
   var location = {
     x: getRandomNumber(LOCATION_X_MIN, LOCATION_X_MAX),
@@ -171,7 +172,6 @@ function renderPropertyElement(property) {
 
   document.querySelector('.dialog__title > img').setAttribute('src', property.author.avatar);
   offerDialog.replaceChild(element, dialogPanel);
-
 }
 
 function createFeaturesElement(features) {
