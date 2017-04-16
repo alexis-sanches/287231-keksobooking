@@ -11,11 +11,11 @@ var PROPERTY_TITLES = [
   'Неуютное бунгало по колено в воде'
 ];
 
-var PROPERTY_TYPES = [
-  'flat',
-  'house',
-  'bungalo'
-];
+var PROPERTY_TYPES = {
+  FLAT: 'flat',
+  HOUSE: 'house',
+  BUNGALO: 'bungalo'
+};
 
 var PROPERTY_TYPE_TRANSLATIONS = {
   flat: 'Квартира',
@@ -89,10 +89,11 @@ function createPins(properties) {
 }
 
 function createProperties(numberOfProperties) {
+  var propertyTitlesList = getRandomElementsFromArray(numberOfProperties, PROPERTY_TITLES);
   var properties = [];
-
+  
   for (var i = 0; i < numberOfProperties; i++) {
-    var property = createRandomProperty(i);
+    var property = createRandomProperty(i, propertyTitlesList);
 
     properties.push(property);
   }
@@ -100,13 +101,13 @@ function createProperties(numberOfProperties) {
   return properties;
 }
 
-function createRandomProperty(index) {
+function createRandomProperty(index, titles) {
   var location = {
     x: getRandomNumber(LOCATION_X_MIN, LOCATION_X_MAX),
     y: getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX)
   };
 
-  var title = PROPERTY_TITLES[index];
+  var title = titles[index];
 
   return {
     author: {
@@ -116,12 +117,12 @@ function createRandomProperty(index) {
       title: title,
       address: location.x + ',' + location.y,
       price: getRandomNumber(PRICE_MIN, PRICE_MAX),
-      type: getRandomArrayElement(PROPERTY_TYPES),
+      type: getPropertyTypeByTitle(title),
       rooms: getRandomNumber(ROOM_NUMBER_MIN, ROOM_NUMBER_MAX),
       guests: getRandomNumber(GUESTS_NUMBER_MIN, GUESTS_NUMBER_MAX),
       checkin: getRandomArrayElement(PROPERTY_CHECK_TIMES),
       checkout: getRandomArrayElement(PROPERTY_CHECK_TIMES),
-      features: getRandomElementsFromArray(PROPERTY_FEATURES),
+      features: getRandomElementsFromArray(PROPERTY_FEATURES.length, PROPERTY_FEATURES),
       description: '',
       photo: []
     },
@@ -187,8 +188,21 @@ function createFeaturesElement(features) {
   return fragment;
 }
 
-function getRandomElementsFromArray(arr) {
-  var numberOfElements = getRandomNumber(1, arr.length);
+function getPropertyTypeByTitle (title) {
+  var lowerCaseTitle = title.toLowerCase();
+
+  if (~lowerCaseTitle.indexOf('бунгало')) {
+    return PROPERTY_TYPES.BUNGALO;
+  }
+
+  if (~lowerCaseTitle.indexOf('квартир')) {
+    return PROPERTY_TYPES.FLAT;
+  }
+
+  return PROPERTY_TYPES.HOUSE;
+}
+
+function getRandomElementsFromArray(numberOfElements, arr) {
   var arrayCopy = arr.slice();
 
   var newArray = [];
