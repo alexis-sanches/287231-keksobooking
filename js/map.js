@@ -108,6 +108,7 @@ function createRandomProperty(index, titles) {
   };
 
   var title = titles[index];
+  var featuresNumber = getRandomArrayIndex(PROPERTY_FEATURES) + 1;
 
   return {
     author: {
@@ -122,7 +123,7 @@ function createRandomProperty(index, titles) {
       guests: getRandomNumber(GUESTS_NUMBER_MIN, GUESTS_NUMBER_MAX),
       checkin: getRandomArrayElement(PROPERTY_CHECK_TIMES),
       checkout: getRandomArrayElement(PROPERTY_CHECK_TIMES),
-      features: getRandomElementsFromArray(PROPERTY_FEATURES.length, PROPERTY_FEATURES),
+      features: getRandomElementsFromArray(featuresNumber, PROPERTY_FEATURES),
       description: '',
       photo: []
     },
