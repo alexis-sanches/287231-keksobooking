@@ -91,7 +91,7 @@ function createPins(properties) {
 function createProperties(numberOfProperties) {
   var propertyTitlesList = getRandomElementsFromArray(numberOfProperties, PROPERTY_TITLES);
   var properties = [];
-  
+
   for (var i = 0; i < numberOfProperties; i++) {
     var property = createRandomProperty(i, propertyTitlesList);
 
@@ -188,7 +188,7 @@ function createFeaturesElement(features) {
   return fragment;
 }
 
-function getPropertyTypeByTitle (title) {
+function getPropertyTypeByTitle(title) {
   var lowerCaseTitle = title.toLowerCase();
 
   if (~lowerCaseTitle.indexOf('бунгало')) {
