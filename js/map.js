@@ -89,7 +89,7 @@ function createPins(properties) {
 }
 
 function createProperties(numberOfProperties) {
-  var propertyTitlesList = getRandomElementsFromArray(numberOfProperties, PROPERTY_TITLES);
+  var propertyTitlesList = getRandomElementsFromArray(PROPERTY_TITLES, numberOfProperties);
   var properties = [];
 
   for (var i = 0; i < numberOfProperties; i++) {
@@ -123,7 +123,7 @@ function createRandomProperty(index, titles) {
       guests: getRandomNumber(GUESTS_NUMBER_MIN, GUESTS_NUMBER_MAX),
       checkin: getRandomArrayElement(PROPERTY_CHECK_TIMES),
       checkout: getRandomArrayElement(PROPERTY_CHECK_TIMES),
-      features: getRandomElementsFromArray(featuresNumber, PROPERTY_FEATURES),
+      features: getRandomElementsFromArray(PROPERTY_FEATURES, featuresNumber),
       description: '',
       photo: []
     },
@@ -203,10 +203,14 @@ function getPropertyTypeByTitle(title) {
   return PROPERTY_TYPES.HOUSE;
 }
 
-function getRandomElementsFromArray(numberOfElements, arr) {
+function getRandomElementsFromArray(arr, numberOfElements) {
   var arrayCopy = arr.slice();
 
   var newArray = [];
+
+  if (numberOfElements === undefined) {
+    var numberOfElements = arr.length + 1;
+  }
 
   for (var i = 0; i < numberOfElements; i++) {
     var randomIndex = getRandomArrayIndex(arrayCopy);
