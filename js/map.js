@@ -208,10 +208,6 @@ function getRandomElementsFromArray(arr, numberOfElements) {
 
   var newArray = [];
 
-  if (numberOfElements === undefined) {
-    var numberOfElements = arr.length + 1;
-  }
-
   for (var i = 0; i < numberOfElements; i++) {
     var randomIndex = getRandomArrayIndex(arrayCopy);
 
