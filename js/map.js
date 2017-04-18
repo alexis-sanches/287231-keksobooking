@@ -205,8 +205,11 @@ function getPropertyTypeByTitle(title) {
 
 function getRandomElementsFromArray(arr, numberOfElements) {
   var arrayCopy = arr.slice();
-
   var newArray = [];
+
+  if (numberOfElements === 'undefined') {
+    numberOfElements = arr.length + 1;
+  }
 
   for (var i = 0; i < numberOfElements; i++) {
     var randomIndex = getRandomArrayIndex(arrayCopy);
