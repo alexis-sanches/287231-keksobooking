@@ -328,7 +328,7 @@ function events(properties) {
   }
 
   function connectPins() {
-    var pinsAndProperties = [];
+    var newObject = [];
 
     for (var i = 0; i < pins.length; i++) {
       var currentObject = {
@@ -336,9 +336,9 @@ function events(properties) {
         property: properties[i]
       };
 
-      pinsAndProperties.push(currentObject);
+      newObject.push(currentObject);
     }
 
-    return pinsAndProperties;
+    return newObject;
   }
 }
