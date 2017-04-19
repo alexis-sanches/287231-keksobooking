@@ -57,11 +57,9 @@ var NUMBER_OF_PROPERTIES = 8;
 
 var lodgeTemplate = document.getElementById('lodge-template');
 var offerDialog = document.getElementById('offer-dialog');
-
 var pinContainer = document.querySelector('.tokyo__pin-map');
 
 init();
-
 
 function init() {
   var properties = createProperties(NUMBER_OF_PROPERTIES);
@@ -69,12 +67,6 @@ function init() {
 
   renderPins(pinContainer, pins);
   events(properties);
-}
-
-function renderFirstProperty(properties) {
-  var firstProperty = properties[0];
-
-  renderPropertyElement(firstProperty);
 }
 
 function createPins(properties) {
