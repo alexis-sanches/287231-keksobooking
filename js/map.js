@@ -57,17 +57,18 @@ var NUMBER_OF_PROPERTIES = 8;
 
 var lodgeTemplate = document.getElementById('lodge-template');
 var offerDialog = document.getElementById('offer-dialog');
-var dialogPanel = document.querySelector('.dialog__panel');
+
 var pinContainer = document.querySelector('.tokyo__pin-map');
 
 init();
+
 
 function init() {
   var properties = createProperties(NUMBER_OF_PROPERTIES);
   var pins = createPins(properties);
 
   renderPins(pinContainer, pins);
-  renderFirstProperty(properties);
+  events(properties);
 }
 
 function renderFirstProperty(properties) {
@@ -144,6 +145,7 @@ function createPin(property) {
   avatarImage.src = property.author.avatar;
   avatarImage.width = 40;
   avatarImage.height = 40;
+  avatarImage.tabIndex = 0;
 
   pin.appendChild(avatarImage);
 
@@ -162,6 +164,7 @@ function renderPins(container, pinElements) {
 
 function renderPropertyElement(property) {
   var element = lodgeTemplate.content.cloneNode(true);
+  var dialogPanel = document.querySelector('.dialog__panel');
 
   element.querySelector('.lodge__title').textContent = property.offer.title;
   element.querySelector('.lodge__address').textContent = property.offer.address;
@@ -203,6 +206,12 @@ function getPropertyTypeByTitle(title) {
   return PROPERTY_TYPES.HOUSE;
 }
 
+/**
+ * MODULE UTILS.JS
+ *
+ * AUXILLIARY FUNCTIONS
+ */
+
 function getRandomElementsFromArray(arr, numberOfElements) {
   var arrayCopy = arr.slice();
   var newArray = [];
@@ -231,4 +240,113 @@ function getRandomArrayElement(array) {
 
 function getRandomArrayIndex(array) {
   return getRandomNumber(0, array.length);
+}
+
+function addClass(element, newClass) {
+  element.classList.add(newClass);
+}
+
+function removeClass(element, newClass) {
+  element.classList.remove(newClass);
+}
+
+/**
+ * MODULE EVENTS.JS
+ */
+
+function events(properties) {
+  var pins = pinContainer.querySelectorAll('.pin:not(.pin__main)');
+  var pinsAndProperties = connectPins();
+  var dialogClose = offerDialog.querySelector('.dialog__close');
+
+  var ENTER_KEY_CODE = 13;
+  var ESC_KEY_CODE = 27;
+
+  addClass(offerDialog, 'hidden');
+
+  pinsAndProperties.forEach(function (currentObject) {
+
+    currentObject.pin.addEventListener('click', function (evt) {
+      openDialog(evt, currentObject);
+    });
+
+    currentObject.pin.children[0].addEventListener('keydown', function (evt) {
+      openDialog(evt, currentObject);
+    });
+  });
+
+  document.addEventListener('keydown', onDialogCloseClick);
+  dialogClose.addEventListener('click', onDialogCloseClick);
+  dialogClose.children[0].addEventListener('keydown', onDialogCloseClick);
+
+  /**
+   * FUNCTIONS FOR EVENTS.JS
+   */
+
+  function onDialogCloseClick(evt) {
+    switch (evt.type) {
+      case 'click':
+        closeDialog(evt);
+        break;
+      case 'keydown':
+        if (evt.keyCode === ESC_KEY_CODE && offerDialog.className !== 'hidden') {
+          closeDialog(evt);
+        } else if (evt.keyCode === ENTER_KEY_CODE) {
+          closeDialog(evt);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  function closeDialog(evt) {
+    evt.preventDefault();
+    deactivatePins();
+    addClass(offerDialog, 'hidden');
+  }
+
+  function openDialog(evt, currentObject) {
+    switch (evt.type) {
+      case 'click':
+        deactivatePins();
+        addClass(currentObject.pin, 'pin--active');
+        removeClass(offerDialog, 'hidden');
+        renderPropertyElement(currentObject.property);
+        break;
+
+      case 'keydown':
+        if (evt.keyCode === ENTER_KEY_CODE) {
+          evt.stopPropagation();
+          deactivatePins();
+          addClass(currentObject.pin, 'pin--active');
+          removeClass(offerDialog, 'hidden');
+          renderPropertyElement(currentObject.property);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  function deactivatePins() {
+    pins.forEach(function (pin) {
+      removeClass(pin, 'pin--active');
+    });
+  }
+
+  function connectPins() {
+    var pinsAndProperties = [];
+
+    for (var i = 0; i < pins.length; i++) {
+      var currentObject = {
+        pin: pins[i],
+        property: properties[i]
+      };
+
+      pinsAndProperties.push(currentObject);
+    }
+
+    return pinsAndProperties;
+  }
 }
