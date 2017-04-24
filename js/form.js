@@ -13,9 +13,13 @@ validateForm();
 
 function validateForm() {
   checkinOfProperty.addEventListener('change', onCheckinChange);
+  
   checkoutOfProperty.addEventListener('change', onCheckoutChange);
+
   roomNumberOfProperty.addEventListener('change', onRoomsNumberChange);
+
   typeOfProperty.addEventListener('change', onTypeChange);
+
   capacityOfProperty.addEventListener('change', onCapacityChange);
 
   noticeForm.addEventListener('submit', function () {
