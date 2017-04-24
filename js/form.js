@@ -1,5 +1,20 @@
 'use strict';
 
+var TYPES = {
+  flat: {
+    price: 1000,
+    minPrice: 1000
+  },
+  hut: {
+    price: 0,
+    minPrice: 0
+  },
+  palace: {
+    price: 10000,
+    minPrice: 10000
+  },
+}
+
 var notice = document.querySelector('.notice');
 var noticeForm = notice.querySelector('.notice__form');
 var typeOfProperty = noticeForm.querySelector('#type');
@@ -12,6 +27,7 @@ var checkoutOfProperty = noticeForm.querySelector('#timeout');
 validateForm();
 
 function validateForm() {
+
   checkinOfProperty.addEventListener('change', onCheckinChange);
 
   checkoutOfProperty.addEventListener('change', onCheckoutChange);
@@ -23,8 +39,23 @@ function validateForm() {
   capacityOfProperty.addEventListener('change', onCapacityChange);
 
   noticeForm.addEventListener('submit', function () {
-    noticeForm.reset();
+    if (!checkFormValidity()) {
+      evt.preventDefault();
+    } else {
+      noticeForm.reset();
+      noticeForm.submit();
+    }
   });
+
+  function checkFormValidity() {
+    for (var i = 0; i < noticeForm.elements.length; i++) {
+      if (!noticeForm.elements[i].checkValidity()) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   function onCheckinChange(evt) {
     checkoutOfProperty.value = evt.target.value;
@@ -52,20 +83,16 @@ function validateForm() {
   }
 
   function onRoomsNumberChange(evt) {
-    switch (evt.target.value) {
-      case '1':
-        capacityOfProperty.value = 0;
-        break;
-      default:
-        capacityOfProperty.value = 3;
+    if (evt.target.value === '1') {
+      capacityOfProperty.value = 0;
+    } else {
+      capacityOfProperty.value = 3;
     }
   }
 
   function onCapacityChange(evt) {
-    switch (evt.target.value) {
-      case '3':
-        roomNumberOfProperty.value = 2;
-        break;
+    if (evt.target.value === '3') {
+      roomNumberOfProperty.value = 2;
     }
   }
 }
