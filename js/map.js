@@ -55,6 +55,9 @@ var GUESTS_NUMBER_MAX = 10;
 
 var NUMBER_OF_PROPERTIES = 8;
 
+var ENTER_KEY_CODE = 13;
+var ESC_KEY_CODE = 27;
+
 var lodgeTemplate = document.getElementById('lodge-template');
 var offerDialog = document.getElementById('offer-dialog');
 var pinContainer = document.querySelector('.tokyo__pin-map');
@@ -157,17 +160,26 @@ function renderPins(container, pinElements) {
 function renderPropertyElement(property) {
   var element = lodgeTemplate.content.cloneNode(true);
   var dialogPanel = document.querySelector('.dialog__panel');
+  var lodgeTitle = element.querySelector('.lodge__title');
+  var lodgeAddress = element.querySelector('.lodge__address');
+  var lodgePrice = element.querySelector('.lodge__price');
+  var lodgeType = element.querySelector('.lodge__type');
+  var lodgeRoomsAndGuests = element.querySelector('.lodge__rooms-and-guests');
+  var lodgeCheckin = element.querySelector('.lodge__checkin-time');
+  var lodgeFeatures = element.querySelector('.lodge__features');
+  var lodgeDescription = element.querySelector('.lodge__description');
+  var dialogImage = document.querySelector('.dialog__title > img');
 
-  element.querySelector('.lodge__title').textContent = property.offer.title;
-  element.querySelector('.lodge__address').textContent = property.offer.address;
-  element.querySelector('.lodge__price').textContent = property.offer.price + ' ₽/ночь';
-  element.querySelector('.lodge__type').textContent = PROPERTY_TYPE_TRANSLATIONS[property.offer.type];
-  element.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + property.offer.guests + ' гостей в ' + property.offer.rooms + ' комнатах';
-  element.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + property.offer.checkin + ', выезд до ' + property.offer.checkout;
-  element.querySelector('.lodge__features').appendChild(createFeaturesElement(property.offer.features));
-  element.querySelector('.lodge__description').textContent = property.offer.description;
+  lodgeTitle.textContent = property.offer.title;
+  lodgeAddress.textContent = property.offer.address;
+  lodgePrice.textContent = property.offer.price + ' ₽/ночь';
+  lodgeType.textContent = PROPERTY_TYPE_TRANSLATIONS[property.offer.type];
+  lodgeRoomsAndGuests.textContent = 'Для ' + property.offer.guests + ' гостей в ' + property.offer.rooms + ' комнатах';
+  lodgeCheckin.textContent = 'Заезд после ' + property.offer.checkin + ', выезд до ' + property.offer.checkout;
+  lodgeFeatures.appendChild(createFeaturesElement(property.offer.features));
+  lodgeDescription.textContent = property.offer.description;
 
-  document.querySelector('.dialog__title > img').setAttribute('src', property.author.avatar);
+  dialogImage.setAttribute('src', property.author.avatar);
   offerDialog.replaceChild(element, dialogPanel);
 }
 
@@ -250,75 +262,55 @@ function events(properties) {
   var pins = pinContainer.querySelectorAll('.pin:not(.pin__main)');
   var pinsAndProperties = connectPins();
   var dialogClose = offerDialog.querySelector('.dialog__close');
-
-  var ENTER_KEY_CODE = 13;
-  var ESC_KEY_CODE = 27;
+  var dialogCloseImage = dialogClose.querySelector('.dialog__close img');
 
   addClass(offerDialog, 'hidden');
 
   pinsAndProperties.forEach(function (currentObject) {
+    var pinImage = currentObject.pin.querySelector('.rounded');
 
-    currentObject.pin.addEventListener('click', function (evt) {
-      openDialog(evt, currentObject);
+    currentObject.pin.addEventListener('click', function () {
+      openDialog(currentObject);
     });
 
-    currentObject.pin.children[0].addEventListener('keydown', function (evt) {
-      openDialog(evt, currentObject);
+    pinImage.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEY_CODE) {
+        openDialog(currentObject);
+      }
     });
   });
 
-  document.addEventListener('keydown', onDialogCloseClick);
-  dialogClose.addEventListener('click', onDialogCloseClick);
-  dialogClose.children[0].addEventListener('keydown', onDialogCloseClick);
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEY_CODE && !offerDialog.classList.contains('hidden')) {
+      closeDialog(evt);
+    }
+  });
+
+  dialogClose.addEventListener('click', function (evt) {
+    closeDialog(evt);
+  });
+
+  dialogCloseImage.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEY_CODE) {
+      closeDialog(evt);
+    }
+  });
 
   /**
    * FUNCTIONS FOR EVENTS.JS
    */
 
-  function onDialogCloseClick(evt) {
-    switch (evt.type) {
-      case 'click':
-        closeDialog(evt);
-        break;
-      case 'keydown':
-        if (evt.keyCode === ESC_KEY_CODE && offerDialog.className !== 'hidden') {
-          closeDialog(evt);
-        } else if (evt.keyCode === ENTER_KEY_CODE) {
-          closeDialog(evt);
-        }
-        break;
-      default:
-        break;
-    }
+  function openDialog(currentObject) {
+    deactivatePins();
+    addClass(currentObject.pin, 'pin--active');
+    removeClass(offerDialog, 'hidden');
+    renderPropertyElement(currentObject.property);
   }
 
   function closeDialog(evt) {
     evt.preventDefault();
     deactivatePins();
     addClass(offerDialog, 'hidden');
-  }
-
-  function openDialog(evt, currentObject) {
-    switch (evt.type) {
-      case 'click':
-        deactivatePins();
-        addClass(currentObject.pin, 'pin--active');
-        removeClass(offerDialog, 'hidden');
-        renderPropertyElement(currentObject.property);
-        break;
-
-      case 'keydown':
-        if (evt.keyCode === ENTER_KEY_CODE) {
-          evt.stopPropagation();
-          deactivatePins();
-          addClass(currentObject.pin, 'pin--active');
-          removeClass(offerDialog, 'hidden');
-          renderPropertyElement(currentObject.property);
-        }
-        break;
-      default:
-        break;
-    }
   }
 
   function deactivatePins() {
