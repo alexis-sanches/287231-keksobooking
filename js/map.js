@@ -264,12 +264,10 @@ function events(properties) {
   var dialogClose = offerDialog.querySelector('.dialog__close');
   var dialogCloseImage = dialogClose.querySelector('.dialog__close img');
 
-
   addClass(offerDialog, 'hidden');
 
   pinsAndProperties.forEach(function (currentObject) {
     var pinImage = currentObject.pin.querySelector('.rounded');
-
 
     currentObject.pin.addEventListener('click', function () {
       openDialog(currentObject);
