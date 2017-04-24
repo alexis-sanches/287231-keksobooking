@@ -13,7 +13,7 @@ validateForm();
 
 function validateForm() {
   checkinOfProperty.addEventListener('change', onCheckinChange);
-  
+
   checkoutOfProperty.addEventListener('change', onCheckoutChange);
 
   roomNumberOfProperty.addEventListener('change', onRoomsNumberChange);
