@@ -270,12 +270,13 @@ function events(properties) {
   pinsAndProperties.forEach(function (currentObject) {
     var pinImage = currentObject.pin.querySelector('.rounded');
 
+
     currentObject.pin.addEventListener('click', function () {
       openDialog(currentObject);
     });
 
     pinImage.addEventListener('keydown', function (evt) {
-      if (evt.keydown === ENTER_KEY_CODE) {
+      if (evt.keyCode === ENTER_KEY_CODE) {
         openDialog(currentObject);
       }
     });
