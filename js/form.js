@@ -13,7 +13,7 @@ var TYPES = {
     price: 10000,
     minPrice: 10000
   },
-}
+};
 
 var notice = document.querySelector('.notice');
 var noticeForm = notice.querySelector('.notice__form');
@@ -23,11 +23,11 @@ var roomNumberOfProperty = noticeForm.querySelector('#room_number');
 var capacityOfProperty = noticeForm.querySelector('#capacity');
 var checkinOfProperty = noticeForm.querySelector('#time');
 var checkoutOfProperty = noticeForm.querySelector('#timeout');
+var submitForm = noticeForm.querySelector('.form__submit');
 
 validateForm();
 
 function validateForm() {
-
   checkinOfProperty.addEventListener('change', onCheckinChange);
 
   checkoutOfProperty.addEventListener('change', onCheckoutChange);
@@ -38,14 +38,20 @@ function validateForm() {
 
   capacityOfProperty.addEventListener('change', onCapacityChange);
 
-  noticeForm.addEventListener('submit', function () {
+  noticeForm.addEventListener('submit', function (evt) {
     if (!checkFormValidity()) {
       evt.preventDefault();
-    } else {
-      noticeForm.reset();
-      noticeForm.submit();
+      addInvalidClass(noticeForm.elements);
     }
   });
+
+  function addInvalidClass(array) {
+    for (var i = 0; i < array.length; i++) {
+      if (!array[i].validity.valid) {
+        array[i].classList.add('invalid');
+      }
+    }
+  }
 
   function checkFormValidity() {
     for (var i = 0; i < noticeForm.elements.length; i++) {
@@ -66,20 +72,10 @@ function validateForm() {
   }
 
   function onTypeChange(evt) {
-    switch (evt.target.value) {
-      case 'flat':
-        priceOfProperty.value = 1000;
-        priceOfProperty.min = 1000;
-        break;
-      case 'hut':
-        priceOfProperty.value = 0;
-        priceOfProperty.min = 0;
-        break;
-      default:
-        priceOfProperty.value = 10000;
-        priceOfProperty.min = 10000;
-        break;
-    }
+    var flatType = evt.target.value || 'default';
+
+    priceOfProperty.value = TYPES[flatType].price;
+    priceOfProperty.min = TYPES[flatType].minPrice;
   }
 
   function onRoomsNumberChange(evt) {
