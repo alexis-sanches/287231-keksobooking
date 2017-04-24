@@ -23,7 +23,6 @@ var roomNumberOfProperty = noticeForm.querySelector('#room_number');
 var capacityOfProperty = noticeForm.querySelector('#capacity');
 var checkinOfProperty = noticeForm.querySelector('#time');
 var checkoutOfProperty = noticeForm.querySelector('#timeout');
-var submitForm = noticeForm.querySelector('.form__submit');
 
 validateForm();
 
@@ -74,8 +73,10 @@ function validateForm() {
   function onTypeChange(evt) {
     var flatType = evt.target.value || 'default';
 
-    priceOfProperty.value = TYPES[flatType].price;
-    priceOfProperty.min = TYPES[flatType].minPrice;
+    if (TYPES[flatType]) {
+      priceOfProperty.value = TYPES[flatType].price;
+      priceOfProperty.min = TYPES[flatType].minPrice;
+    }
   }
 
   function onRoomsNumberChange(evt) {
