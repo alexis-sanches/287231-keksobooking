@@ -55,9 +55,11 @@ var GUESTS_NUMBER_MAX = 10;
 
 var NUMBER_OF_PROPERTIES = 8;
 
+var ENTER_KEY_CODE = 13;
+var ESC_KEY_CODE = 27;
+
 var lodgeTemplate = document.getElementById('lodge-template');
 var offerDialog = document.getElementById('offer-dialog');
-var dialogPanel = document.querySelector('.dialog__panel');
 var pinContainer = document.querySelector('.tokyo__pin-map');
 
 init();
@@ -67,13 +69,7 @@ function init() {
   var pins = createPins(properties);
 
   renderPins(pinContainer, pins);
-  renderFirstProperty(properties);
-}
-
-function renderFirstProperty(properties) {
-  var firstProperty = properties[0];
-
-  renderPropertyElement(firstProperty);
+  events(properties);
 }
 
 function createPins(properties) {
@@ -144,6 +140,7 @@ function createPin(property) {
   avatarImage.src = property.author.avatar;
   avatarImage.width = 40;
   avatarImage.height = 40;
+  avatarImage.tabIndex = 0;
 
   pin.appendChild(avatarImage);
 
@@ -162,17 +159,27 @@ function renderPins(container, pinElements) {
 
 function renderPropertyElement(property) {
   var element = lodgeTemplate.content.cloneNode(true);
+  var dialogPanel = document.querySelector('.dialog__panel');
+  var lodgeTitle = element.querySelector('.lodge__title');
+  var lodgeAddress = element.querySelector('.lodge__address');
+  var lodgePrice = element.querySelector('.lodge__price');
+  var lodgeType = element.querySelector('.lodge__type');
+  var lodgeRoomsAndGuests = element.querySelector('.lodge__rooms-and-guests');
+  var lodgeCheckin = element.querySelector('.lodge__checkin-time');
+  var lodgeFeatures = element.querySelector('.lodge__features');
+  var lodgeDescription = element.querySelector('.lodge__description');
+  var dialogImage = document.querySelector('.dialog__title > img');
 
-  element.querySelector('.lodge__title').textContent = property.offer.title;
-  element.querySelector('.lodge__address').textContent = property.offer.address;
-  element.querySelector('.lodge__price').textContent = property.offer.price + ' ₽/ночь';
-  element.querySelector('.lodge__type').textContent = PROPERTY_TYPE_TRANSLATIONS[property.offer.type];
-  element.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + property.offer.guests + ' гостей в ' + property.offer.rooms + ' комнатах';
-  element.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + property.offer.checkin + ', выезд до ' + property.offer.checkout;
-  element.querySelector('.lodge__features').appendChild(createFeaturesElement(property.offer.features));
-  element.querySelector('.lodge__description').textContent = property.offer.description;
+  lodgeTitle.textContent = property.offer.title;
+  lodgeAddress.textContent = property.offer.address;
+  lodgePrice.textContent = property.offer.price + ' ₽/ночь';
+  lodgeType.textContent = PROPERTY_TYPE_TRANSLATIONS[property.offer.type];
+  lodgeRoomsAndGuests.textContent = 'Для ' + property.offer.guests + ' гостей в ' + property.offer.rooms + ' комнатах';
+  lodgeCheckin.textContent = 'Заезд после ' + property.offer.checkin + ', выезд до ' + property.offer.checkout;
+  lodgeFeatures.appendChild(createFeaturesElement(property.offer.features));
+  lodgeDescription.textContent = property.offer.description;
 
-  document.querySelector('.dialog__title > img').setAttribute('src', property.author.avatar);
+  dialogImage.setAttribute('src', property.author.avatar);
   offerDialog.replaceChild(element, dialogPanel);
 }
 
@@ -203,6 +210,12 @@ function getPropertyTypeByTitle(title) {
   return PROPERTY_TYPES.HOUSE;
 }
 
+/**
+ * MODULE UTILS.JS
+ *
+ * AUXILLIARY FUNCTIONS
+ */
+
 function getRandomElementsFromArray(arr, numberOfElements) {
   var arrayCopy = arr.slice();
   var newArray = [];
@@ -231,4 +244,93 @@ function getRandomArrayElement(array) {
 
 function getRandomArrayIndex(array) {
   return getRandomNumber(0, array.length);
+}
+
+function addClass(element, newClass) {
+  element.classList.add(newClass);
+}
+
+function removeClass(element, newClass) {
+  element.classList.remove(newClass);
+}
+
+/**
+ * MODULE EVENTS.JS
+ */
+
+function events(properties) {
+  var pins = pinContainer.querySelectorAll('.pin:not(.pin__main)');
+  var pinsAndProperties = connectPins();
+  var dialogClose = offerDialog.querySelector('.dialog__close');
+  var dialogCloseImage = dialogClose.querySelector('.dialog__close img');
+
+  addClass(offerDialog, 'hidden');
+
+  pinsAndProperties.forEach(function (currentObject) {
+    var pinImage = currentObject.pin.querySelector('.rounded');
+
+    currentObject.pin.addEventListener('click', function () {
+      openDialog(currentObject);
+    });
+
+    pinImage.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ENTER_KEY_CODE) {
+        openDialog(currentObject);
+      }
+    });
+  });
+
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEY_CODE && !offerDialog.classList.contains('hidden')) {
+      closeDialog(evt);
+    }
+  });
+
+  dialogClose.addEventListener('click', function (evt) {
+    closeDialog(evt);
+  });
+
+  dialogCloseImage.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEY_CODE) {
+      closeDialog(evt);
+    }
+  });
+
+  /**
+   * FUNCTIONS FOR EVENTS.JS
+   */
+
+  function openDialog(currentObject) {
+    deactivatePins();
+    addClass(currentObject.pin, 'pin--active');
+    removeClass(offerDialog, 'hidden');
+    renderPropertyElement(currentObject.property);
+  }
+
+  function closeDialog(evt) {
+    evt.preventDefault();
+    deactivatePins();
+    addClass(offerDialog, 'hidden');
+  }
+
+  function deactivatePins() {
+    pins.forEach(function (pin) {
+      removeClass(pin, 'pin--active');
+    });
+  }
+
+  function connectPins() {
+    var newObject = [];
+
+    for (var i = 0; i < pins.length; i++) {
+      var currentObject = {
+        pin: pins[i],
+        property: properties[i]
+      };
+
+      newObject.push(currentObject);
+    }
+
+    return newObject;
+  }
 }
