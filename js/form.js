@@ -44,16 +44,18 @@ function validateForm() {
 
   noticeForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
+
     if (!checkFormValidity()) {
       addInvalidClass(noticeForm.elements);
-      noticeForm.addEventListener('change', function (e) {
-        if (e.target.checkValidity()) {
-          e.target.style.border = null;
-        }
-      });
     } else {
       noticeForm.submit();
       noticeForm.reset();
+    }
+  });
+
+  noticeForm.addEventListener('change', function (evt) {
+    if (evt.target.checkValidity()) {
+      evt.target.style.border = null;
     }
   });
 
