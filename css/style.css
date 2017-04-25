@@ -659,3 +659,7 @@ select option:hover {
 .hidden {
   display: none;
 }
+
+input.invalid {
+  border: 2px solid red;
+}
