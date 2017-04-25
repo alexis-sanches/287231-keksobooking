@@ -15,6 +15,11 @@ var TYPES = {
   },
 };
 
+var CAPACITY_OF_PROPERTY = {
+  zero: 0,
+  three: 3
+};
+
 var notice = document.querySelector('.notice');
 var noticeForm = notice.querySelector('.notice__form');
 var typeOfProperty = noticeForm.querySelector('#type');
@@ -23,6 +28,7 @@ var roomNumberOfProperty = noticeForm.querySelector('#room_number');
 var capacityOfProperty = noticeForm.querySelector('#capacity');
 var checkinOfProperty = noticeForm.querySelector('#time');
 var checkoutOfProperty = noticeForm.querySelector('#timeout');
+var submitButton = noticeForm.querySelector('form__submit');
 
 validateForm();
 
@@ -38,18 +44,26 @@ function validateForm() {
   capacityOfProperty.addEventListener('change', onCapacityChange);
 
   noticeForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
     if (!checkFormValidity()) {
-      evt.preventDefault();
       addInvalidClass(noticeForm.elements);
+    } else {
+      noticeForm.submit();
+      noticeForm.reset();
     }
   });
 
   function addInvalidClass(array) {
     for (var i = 0; i < array.length; i++) {
       if (!array[i].validity.valid) {
-        array[i].classList.add('invalid');
+        array[i].style.border = '2px solid red';
       }
     }
+    noticeForm.addEventListener('change', function (evt) {
+      if (evt.target.checkValidity()) {
+        evt.target.style.border = null;
+      }
+    })
   }
 
   function checkFormValidity() {
@@ -71,7 +85,7 @@ function validateForm() {
   }
 
   function onTypeChange(evt) {
-    var flatType = evt.target.value || 'default';
+    var flatType = evt.target.value;
 
     if (TYPES[flatType]) {
       priceOfProperty.value = TYPES[flatType].price;
@@ -81,9 +95,9 @@ function validateForm() {
 
   function onRoomsNumberChange(evt) {
     if (evt.target.value === '1') {
-      capacityOfProperty.value = 0;
+      capacityOfProperty.value = CAPACITY_OF_PROPERTY.zero;
     } else {
-      capacityOfProperty.value = 3;
+      capacityOfProperty.value = CAPACITY_OF_PROPERTY.three;
     }
   }
 
