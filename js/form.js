@@ -46,9 +46,9 @@ function validateForm() {
     evt.preventDefault();
     if (!checkFormValidity()) {
       addInvalidClass(noticeForm.elements);
-      noticeForm.addEventListener('change', function (evt) {
-        if (evt.target.checkValidity()) {
-          evt.target.style.border = null;
+      noticeForm.addEventListener('change', function (e) {
+        if (e.target.checkValidity()) {
+          e.target.style.border = null;
         }
       });
     } else {
