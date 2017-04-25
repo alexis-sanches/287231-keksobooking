@@ -28,7 +28,6 @@ var roomNumberOfProperty = noticeForm.querySelector('#room_number');
 var capacityOfProperty = noticeForm.querySelector('#capacity');
 var checkinOfProperty = noticeForm.querySelector('#time');
 var checkoutOfProperty = noticeForm.querySelector('#timeout');
-var submitButton = noticeForm.querySelector('form__submit');
 
 validateForm();
 
@@ -47,6 +46,11 @@ function validateForm() {
     evt.preventDefault();
     if (!checkFormValidity()) {
       addInvalidClass(noticeForm.elements);
+      noticeForm.addEventListener('change', function (evt) {
+        if (evt.target.checkValidity()) {
+          evt.target.style.border = null;
+        }
+      });
     } else {
       noticeForm.submit();
       noticeForm.reset();
@@ -59,11 +63,6 @@ function validateForm() {
         array[i].style.border = '2px solid red';
       }
     }
-    noticeForm.addEventListener('change', function (evt) {
-      if (evt.target.checkValidity()) {
-        evt.target.style.border = null;
-      }
-    })
   }
 
   function checkFormValidity() {
