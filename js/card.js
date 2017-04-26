@@ -1,3 +1,4 @@
+// card.js
 'use strict';
 
 window.card = (function () {
@@ -31,9 +32,9 @@ window.card = (function () {
 
     dialogImage.setAttribute('src', property.author.avatar);
     offerDialog.replaceChild(element, dialogPanel);
-  }
+  };
 
-  function createFeaturesElement(features) {
+  var createFeaturesElement = function (features) {
     var fragment = document.createDocumentFragment();
 
     features.forEach(function (feature) {
@@ -44,7 +45,7 @@ window.card = (function () {
     });
 
     return fragment;
-  }
+  };
 
   return renderPropertyElement;
 })();

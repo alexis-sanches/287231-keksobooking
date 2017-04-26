@@ -1,3 +1,4 @@
+// pin.js
 'use strict';
 
 window.render = (function () {

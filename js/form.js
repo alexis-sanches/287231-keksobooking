@@ -1,3 +1,4 @@
+// form.js
 'use strict';
 
 (function () {
@@ -30,83 +31,75 @@
   var checkinOfProperty = noticeForm.querySelector('#time');
   var checkoutOfProperty = noticeForm.querySelector('#timeout');
 
-  validateForm();
-
-  function validateForm() {
-    checkinOfProperty.addEventListener('change', onCheckinChange);
-
-    checkoutOfProperty.addEventListener('change', onCheckoutChange);
-
-    roomNumberOfProperty.addEventListener('change', onRoomsNumberChange);
-
-    typeOfProperty.addEventListener('change', onTypeChange);
-
-    capacityOfProperty.addEventListener('change', onCapacityChange);
-
-    noticeForm.addEventListener('submit', function (evt) {
-      evt.preventDefault();
-
-      if (!checkFormValidity()) {
-        addInvalidClass(noticeForm.elements);
-      } else {
-        noticeForm.submit();
-        noticeForm.reset();
-      }
-    });
-
-    noticeForm.addEventListener('change', function (evt) {
-      if (evt.target.checkValidity()) {
-        evt.target.style.border = null;
-      }
-    });
-
-    function addInvalidClass(array) {
-      for (var i = 0; i < array.length; i++) {
-        if (!array[i].validity.valid) {
-          array[i].style.border = '2px solid red';
-        }
+  var checkFormValidity = function () {
+    for (var i = 0; i < noticeForm.elements.length; i++) {
+      if (!noticeForm.elements[i].checkValidity()) {
+        return false;
       }
     }
 
-    function checkFormValidity() {
-      for (var i = 0; i < noticeForm.elements.length; i++) {
-        if (!noticeForm.elements[i].checkValidity()) {
-          return false;
-        }
-      }
+    return true;
+  };
 
-      return true;
-    }
-
-    function onCheckinChange(evt) {
-      checkoutOfProperty.value = evt.target.value;
-    }
-
-    function onCheckoutChange(evt) {
-      checkinOfProperty.value = evt.target.value;
-    }
-
-    function onTypeChange(evt) {
-      var flatType = evt.target.value;
-
-      if (TYPES[flatType]) {
-        priceOfProperty.value = TYPES[flatType].price;
-        priceOfProperty.min = TYPES[flatType].minPrice;
+  var addInvalidClass = function (array) {
+    for (var i = 0; i < array.length; i++) {
+      if (!array[i].validity.valid) {
+        array[i].style.border = '2px solid red';
       }
     }
+  };
 
-    function onRoomsNumberChange(evt) {
-      if (evt.target.value === '1') {
-        capacityOfProperty.value = CAPACITY_OF_PROPERTY.zero;
-      } else {
-        capacityOfProperty.value = CAPACITY_OF_PROPERTY.three;
-      }
-    }
+   var onCheckinChange = function (evt) {
+    checkoutOfProperty.value = evt.target.value;
+  };
 
-    function onCapacityChange(evt) {
-      if (evt.target.value === '3') {
-        roomNumberOfProperty.value = 2;
-      }
+  var onCheckoutChange = function (evt) {
+    checkinOfProperty.value = evt.target.value;
+  };
+
+  var onTypeChange = function (evt) {
+    var flatType = evt.target.value;
+
+    if (TYPES[flatType]) {
+      priceOfProperty.value = TYPES[flatType].price;
+      priceOfProperty.min = TYPES[flatType].minPrice;
     }
-  }
+  };
+
+  var onRoomsNumberChange = function (evt) {
+    if (evt.target.value === '1') {
+      capacityOfProperty.value = CAPACITY_OF_PROPERTY.zero;
+    } else {
+      capacityOfProperty.value = CAPACITY_OF_PROPERTY.three;
+    }
+  };
+
+  var onCapacityChange = function (evt) {
+    if (evt.target.value === '3') {
+      roomNumberOfProperty.value = 2;
+    }
+  };
+
+  checkinOfProperty.addEventListener('change', onCheckinChange);
+  checkoutOfProperty.addEventListener('change', onCheckoutChange);
+  roomNumberOfProperty.addEventListener('change', onRoomsNumberChange);
+  typeOfProperty.addEventListener('change', onTypeChange);
+  capacityOfProperty.addEventListener('change', onCapacityChange);
+
+  noticeForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+
+    if (!checkFormValidity()) {
+      addInvalidClass(noticeForm.elements);
+    } else {
+      noticeForm.submit();
+      noticeForm.reset();
+    }
+  });
+
+  noticeForm.addEventListener('change', function (evt) {
+    if (evt.target.checkValidity()) {
+      evt.target.style.border = null;
+    }
+  });
 })();

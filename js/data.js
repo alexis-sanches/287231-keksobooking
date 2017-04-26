@@ -1,3 +1,4 @@
+// data.js
 'use strict';
 
 window.data = (function () {
@@ -91,7 +92,7 @@ window.data = (function () {
     };
   };
 
-  function getPropertyTypeByTitle(title) {
+  var getPropertyTypeByTitle = function (title) {
     var lowerCaseTitle = title.toLowerCase();
 
     if (~lowerCaseTitle.indexOf('бунгало')) {
@@ -103,7 +104,7 @@ window.data = (function () {
     }
 
     return PROPERTY_TYPES.HOUSE;
-  }
+  };
 
   return createProperties;
 })();

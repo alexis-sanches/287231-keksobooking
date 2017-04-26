@@ -1,87 +1,84 @@
+// map.js
 'use strict';
 
-var lodgeTemplate = document.getElementById('lodge-template');
-var offerDialog = document.getElementById('offer-dialog');
-var pinContainer = document.querySelector('.tokyo__pin-map');
-
 (function () {
+  window.lodgeTemplate = document.getElementById('lodge-template');
+  window.offerDialog = document.getElementById('offer-dialog');
+
   var NUMBER_OF_PROPERTIES = 8;
 
   var properties = window.data(NUMBER_OF_PROPERTIES);
-  var pinsList = window.render.createPins(properties);
+  var pins = window.render.createPins(properties);
+  var pinsAndProperties = [];
+  var dialogClose = offerDialog.querySelector('.dialog__close');
+  var dialogCloseImage = dialogClose.querySelector('.dialog__close img');
+  var pinContainer = document.querySelector('.tokyo__pin-map');
 
-  window.render.renderPins(pinContainer, pinsList);
-  events();
+  var openDialog = function (currentObject) {
+    deactivatePins();
+    window.utils.addClass(currentObject.pin, 'pin--active');
+    window.utils.removeClass(offerDialog, 'hidden');
+    window.card(currentObject.property);
+  };
 
-  function events() {
-    var pins = pinContainer.querySelectorAll('.pin:not(.pin__main)');
-    var pinsAndProperties = connectPins();
-    var dialogClose = offerDialog.querySelector('.dialog__close');
-    var dialogCloseImage = dialogClose.querySelector('.dialog__close img');
-
+  var closeDialog = function (evt) {
+    evt.preventDefault();
+    deactivatePins();
     window.utils.addClass(offerDialog, 'hidden');
+  };
 
-    pinsAndProperties.forEach(function (currentObject) {
-      var pinImage = currentObject.pin.querySelector('.rounded');
+  var deactivatePins = function () {
+    pins.forEach(function (pin) {
+      window.utils.removeClass(pin, 'pin--active');
+    });
+  };
 
-      currentObject.pin.addEventListener('click', function () {
-        openDialog(currentObject);
-      });
+  var connectPins = function () {
+    var newObject = [];
 
-      pinImage.addEventListener('keydown', function (evt) {
-        if (window.utils.isEnterCode(evt.keyCode)) {
-          openDialog(currentObject);
-        }
-      });
+    for (var i = 0; i < pins.length; i++) {
+      var currentObject = {
+        pin: pins[i],
+        property: properties[i]
+      };
+      newObject.push(currentObject);
+    }
+
+    return newObject;
+  };
+
+  pinsAndProperties = connectPins();
+  window.utils.addClass(offerDialog, 'hidden');
+
+  pinsAndProperties.forEach(function (currentObject) {
+    var pinImage = currentObject.pin.querySelector('.rounded');
+
+    currentObject.pin.addEventListener('click', function () {
+      openDialog(currentObject);
     });
 
-    document.addEventListener('keydown', function (evt) {
-      if (window.utils.isEscCode(evt.keyCode) && !offerDialog.classList.contains('hidden')) {
-        closeDialog(evt);
-      }
-    });
-
-    dialogClose.addEventListener('click', function (evt) {
-      closeDialog(evt);
-    });
-
-    dialogCloseImage.addEventListener('keydown', function (evt) {
+    pinImage.addEventListener('keydown', function (evt) {
       if (window.utils.isEnterCode(evt.keyCode)) {
-        closeDialog(evt);
+        openDialog(currentObject);
       }
     });
+  });
 
-    function openDialog(currentObject) {
-      deactivatePins();
-      window.utils.addClass(currentObject.pin, 'pin--active');
-      window.utils.removeClass(offerDialog, 'hidden');
-      window.card(currentObject.property);
+  document.addEventListener('keydown', function (evt) {
+    if (window.utils.isEscCode(evt.keyCode) && !offerDialog.classList.contains('hidden')) {
+      closeDialog(evt);
     }
+  });
 
-    function closeDialog(evt) {
-      evt.preventDefault();
-      deactivatePins();
-      window.utils.addClass(offerDialog, 'hidden');
+  dialogClose.addEventListener('click', function (evt) {
+    closeDialog(evt);
+  });
+
+  dialogCloseImage.addEventListener('keydown', function (evt) {
+    if (window.utils.isEnterCode(evt.keyCode)) {
+      closeDialog(evt);
     }
+  });
 
-    function deactivatePins() {
-      pins.forEach(function (pin) {
-        window.utils.removeClass(pin, 'pin--active');
-      });
-    }
-
-    function connectPins() {
-      var newObject = [];
-
-      for (var i = 0; i < pins.length; i++) {
-        var currentObject = {
-          pin: pins[i],
-          property: properties[i]
-        };
-        newObject.push(currentObject);
-      }
-
-      return newObject;
-    }
-  }
+  window.render.renderPins(pinContainer, pins);
 })();
