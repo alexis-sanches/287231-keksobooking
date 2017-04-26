@@ -49,5 +49,7 @@ window.card = (function () {
     return fragment;
   };
 
-  return renderPropertyElement;
+  return {
+    renderPropertyElement: renderPropertyElement
+  };
 })();
