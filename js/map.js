@@ -4,7 +4,6 @@
 (function () {
   var NUMBER_OF_PROPERTIES = 8;
 
-  var lodgeTemplate = document.getElementById('lodge-template');
   var offerDialog = document.getElementById('offer-dialog');
   var properties = window.data(NUMBER_OF_PROPERTIES);
   var pins = window.render.createPins(properties);
