@@ -106,5 +106,7 @@ window.data = (function () {
     return PROPERTY_TYPES.HOUSE;
   };
 
-  return createProperties;
+  return {
+    createProperties: createProperties
+  };
 })();

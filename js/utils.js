@@ -35,14 +35,6 @@ window.utils = (function () {
     return newArray;
   };
 
-  var addClass = function (element, newClass) {
-    element.classList.add(newClass);
-  };
-
-  var removeClass = function (element, newClass) {
-    element.classList.remove(newClass);
-  };
-
   var isEscCode = function (code) {
     if (code === ESC_KEY_CODE) {
 
@@ -66,8 +58,6 @@ window.utils = (function () {
     getRandomArrayElement: getRandomArrayElement,
     getRandomArrayIndex: getRandomArrayIndex,
     getRandomElementsFromArray: getRandomElementsFromArray,
-    addClass: addClass,
-    removeClass: removeClass,
     isEscCode: isEscCode,
     isEnterCode: isEnterCode
   };
