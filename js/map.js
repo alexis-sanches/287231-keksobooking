@@ -11,7 +11,7 @@
   var pinContainer = document.querySelector('.tokyo__pin-map');
 
   pins.forEach(function (it, i) {
-    window.showCard(it, offerDialog, property[i], openDialog);
+    window.showCard(it, offerDialog, properties[i], openDialog);
   });
 
   document.addEventListener('keydown', function (evt) {
@@ -30,24 +30,28 @@
     }
   });
 
-  var openDialog = function (pin, property) {
+  window.render.renderPins(pinContainer, pins);
+
+  function openDialog(pin, property) {
     deactivatePins();
     pin.classList.add('pin--active');
     offerDialog.classList.remove('hidden');
     window.card.renderPropertyElement(property);
-  };
+  }
 
-  var closeDialog = function (evt) {
+  function closeDialog(evt) {
     evt.preventDefault();
     deactivatePins();
     offerDialog.classList.add('hidden');
-  };
+  }
 
-  var deactivatePins = function () {
+  function deactivatePins() {
+
+  }
+
+  var closeDialog = function (evt) {
     pins.forEach(function (pin) {
       pin.classList.remove('pin--active');
     });
   };
-
-  window.render.renderPins(pinContainer, pins);
 })();
