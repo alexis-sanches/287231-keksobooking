@@ -46,12 +46,8 @@
   }
 
   function deactivatePins() {
-
-  }
-
-  var closeDialog = function (evt) {
     pins.forEach(function (pin) {
       pin.classList.remove('pin--active');
     });
-  };
+  }
 })();
