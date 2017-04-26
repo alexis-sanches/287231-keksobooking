@@ -3,6 +3,8 @@
 
 window.card = (function () {
   var renderPropertyElement = function (property) {
+    var lodgeTemplate = document.getElementById('lodge-template');
+    var offerDialog = document.getElementById('offer-dialog');
     var element = lodgeTemplate.content.cloneNode(true);
     var dialogPanel = document.querySelector('.dialog__panel');
     var lodgeTitle = element.querySelector('.lodge__title');

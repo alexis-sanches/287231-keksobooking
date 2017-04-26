@@ -2,11 +2,10 @@
 'use strict';
 
 (function () {
-  window.lodgeTemplate = document.getElementById('lodge-template');
-  window.offerDialog = document.getElementById('offer-dialog');
-
   var NUMBER_OF_PROPERTIES = 8;
 
+  var lodgeTemplate = document.getElementById('lodge-template');
+  var offerDialog = document.getElementById('offer-dialog');
   var properties = window.data(NUMBER_OF_PROPERTIES);
   var pins = window.render.createPins(properties);
   var pinsAndProperties = [];

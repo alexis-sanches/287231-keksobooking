@@ -15,7 +15,7 @@ window.utils = (function () {
 
   var getRandomArrayIndex = function (array) {
     return getRandomNumber(0, array.length);
-  }
+  };
 
   var getRandomElementsFromArray = function (arr, numberOfElements) {
     var arrayCopy = arr.slice();
@@ -37,11 +37,11 @@ window.utils = (function () {
 
   var addClass = function (element, newClass) {
     element.classList.add(newClass);
-  }
+  };
 
   var removeClass = function (element, newClass) {
     element.classList.remove(newClass);
-  }
+  };
 
   var isEscCode = function (code) {
     if (code === ESC_KEY_CODE) {

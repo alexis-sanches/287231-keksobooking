@@ -49,7 +49,7 @@
     }
   };
 
-   var onCheckinChange = function (evt) {
+  var onCheckinChange = function (evt) {
     checkoutOfProperty.value = evt.target.value;
   };
 
