@@ -11,15 +11,7 @@
   var pinContainer = document.querySelector('.tokyo__pin-map');
 
   pins.forEach(function (it, i) {
-    it.addEventListener('click', function () {
-      openDialog(i);
-    });
-
-    it.addEventListener('keydown', function (evt) {
-      if (window.utils.isEnterCode(evt.keyCode)) {
-        openDialog(i);
-      }
-    });
+    window.showCard(it, offerDialog, property[i], openDialog);
   });
 
   document.addEventListener('keydown', function (evt) {
@@ -38,11 +30,11 @@
     }
   });
 
-  var openDialog = function (index) {
+  var openDialog = function (pin, property) {
     deactivatePins();
-    pins[index].classList.add('pin--active');
+    pin.classList.add('pin--active');
     offerDialog.classList.remove('hidden');
-    window.card.renderPropertyElement(properties[index]);
+    window.card.renderPropertyElement(property);
   };
 
   var closeDialog = function (evt) {
