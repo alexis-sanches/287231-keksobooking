@@ -1,4 +1,4 @@
-// card.js
+/// card.js
 'use strict';
 
 window.card = (function () {
