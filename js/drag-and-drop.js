@@ -4,6 +4,7 @@
 (function () {
   var PIN_MAIN_HEIGHT = 94;
   var PIN_MAIN_WIDTH = 75;
+  var halfWidth = Math.floor(PIN_MAIN_WIDTH / 2);
 
   var pinMain = document.querySelector('.pin__main');
   var addressOfProperty = document.querySelector('#address');
@@ -24,15 +25,18 @@
         y: startCoords.y - moveEvt.clientY
       };
 
+      var currentX = pinMain.offsetLeft - shift.x;
+      var currentY = pinMain.offsetTop - shift.y;
+
       startCoords = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
 
-      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
-      pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
+      pinMain.style.left = currentX + 'px';
+      pinMain.style.top = currentY + 'px';
 
-      addressOfProperty.value = 'x: ' + (pinMain.offsetLeft - shift.x + Math.floor(PIN_MAIN_WIDTH / 2)) + ', y: ' + (pinMain.offsetTop - shift.y + PIN_MAIN_HEIGHT);
+      addressOfProperty.value = 'x: ' + (currentX + halfWidth) + ', y: ' + (currentY + PIN_MAIN_HEIGHT);
     };
 
     var onMouseUp = function (upEvt) {
@@ -47,12 +51,14 @@
   });
 
   addressOfProperty.addEventListener('change', function (evt) {
+    var split = evt.target.value.split(', ');
+
     var pinCoordinates = {
-      x: evt.target.value.split(', ')[0].slice(3, 6),
-      y: evt.target.value.split(', ')[1].slice(3, 6)
+      x: split[0].slice(3, 6),
+      y: split[1].slice(3, 6)
     };
 
-    pinMain.style.left = (+pinCoordinates.x - Math.floor(PIN_MAIN_WIDTH / 2)) + 'px';
+    pinMain.style.left = (+pinCoordinates.x - halfWidth) + 'px';
     pinMain.style.top = (+pinCoordinates.y - PIN_MAIN_HEIGHT) + 'px';
   });
 })();
