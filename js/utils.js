@@ -53,7 +53,7 @@ window.utils = (function () {
     return false;
   };
 
-  var removeClassFromAll = function(nameOfClass) {
+  var removeClassFromAll = function (nameOfClass) {
     var array = document.querySelectorAll('.' + nameOfClass);
 
     array.forEach(function (it) {

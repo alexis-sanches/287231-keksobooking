@@ -30,7 +30,6 @@ window.load = (function () {
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      var error;
       if (RESPONSE_TYPES[xhr.status]) {
         if (xhr.status === 200) {
           RESPONSE_TYPES[xhr.status](xhr.response);

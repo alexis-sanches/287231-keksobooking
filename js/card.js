@@ -65,7 +65,7 @@ window.card = (function () {
     });
 
     return fragment;
-  };
+  }
 
   function closeDialog(evt) {
     evt.preventDefault();
