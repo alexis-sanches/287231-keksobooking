@@ -2,26 +2,6 @@
 'use strict';
 
 (function () {
-  var TYPES = {
-    flat: {
-      price: 1000,
-      minPrice: 1000
-    },
-    hut: {
-      price: 0,
-      minPrice: 0
-    },
-    palace: {
-      price: 10000,
-      minPrice: 10000
-    },
-  };
-
-  var CAPACITY_OF_PROPERTY = {
-    zero: 0,
-    three: 3
-  };
-
   var notice = document.querySelector('.notice');
   var noticeForm = notice.querySelector('.notice__form');
   var typeOfProperty = noticeForm.querySelector('#type');
@@ -31,15 +11,11 @@
   var checkinOfProperty = noticeForm.querySelector('#time');
   var checkoutOfProperty = noticeForm.querySelector('#timeout');
 
-  checkinOfProperty.addEventListener('change', onCheckinChange);
-
-  checkoutOfProperty.addEventListener('change', onCheckoutChange);
-
-  roomNumberOfProperty.addEventListener('change', onRoomsNumberChange);
-
-  typeOfProperty.addEventListener('change', onTypeChange);
-
-  capacityOfProperty.addEventListener('change', onCapacityChange);
+  var checkTimeValues = ['12', '13', '14'];
+  var typesValues = ['flat', 'hut', 'palace'];
+  var priceValues = [1000, 0, 10000];
+  var roomsValues = ['1', '2', '100'];
+  var capacityValues = ['0', '3', '3'];
 
   noticeForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
@@ -58,7 +34,26 @@
     }
   });
 
-  var checkFormValidity = function () {
+  window.synchronizeFields(checkinOfProperty, checkoutOfProperty, checkTimeValues, checkTimeValues, syncValues);
+
+  window.synchronizeFields(checkoutOfProperty, checkinOfProperty, checkTimeValues, checkTimeValues, syncValues);
+
+  window.synchronizeFields(typeOfProperty, priceOfProperty, typesValues, priceValues, syncPrices);
+
+  window.synchronizeFields(roomNumberOfProperty, capacityOfProperty, roomsValues, capacityValues, syncValues);
+
+  window.synchronizeFields(capacityOfProperty, roomNumberOfProperty, capacityValues.slice(0, 2), roomsValues.slice(0, 2), syncValues);
+
+  function syncValues(element, value) {
+    element.value = value;
+  }
+
+  function syncPrices(element, value) {
+    element.value = value;
+    element.min = value;
+  }
+
+  function checkFormValidity() {
     for (var i = 0; i < noticeForm.elements.length; i++) {
       if (!noticeForm.elements[i].checkValidity()) {
         return false;
@@ -66,44 +61,13 @@
     }
 
     return true;
-  };
+  }
 
-  var addInvalidClass = function (array) {
+  function addInvalidClass(array) {
     for (var i = 0; i < array.length; i++) {
       if (!array[i].validity.valid) {
         array[i].style.border = '2px solid red';
       }
     }
-  };
-
-  var onCheckinChange = function (evt) {
-    checkoutOfProperty.value = evt.target.value;
-  };
-
-  var onCheckoutChange = function (evt) {
-    checkinOfProperty.value = evt.target.value;
-  };
-
-  var onTypeChange = function (evt) {
-    var flatType = evt.target.value;
-
-    if (TYPES[flatType]) {
-      priceOfProperty.value = TYPES[flatType].price;
-      priceOfProperty.min = TYPES[flatType].minPrice;
-    }
-  };
-
-  var onRoomsNumberChange = function (evt) {
-    if (evt.target.value === '1') {
-      capacityOfProperty.value = CAPACITY_OF_PROPERTY.zero;
-    } else {
-      capacityOfProperty.value = CAPACITY_OF_PROPERTY.three;
-    }
-  };
-
-  var onCapacityChange = function (evt) {
-    if (evt.target.value === '3') {
-      roomNumberOfProperty.value = 2;
-    }
-  };
+  }
 })();
