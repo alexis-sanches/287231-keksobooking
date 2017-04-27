@@ -61,6 +61,15 @@ window.utils = (function () {
     });
   };
 
+  var isChecked = function (checkbox) {
+    if (checkbox.checked) {
+
+      return true;
+    }
+
+    return false;
+  };
+
   return {
     getRandomNumber: getRandomNumber,
     getRandomArrayElement: getRandomArrayElement,
@@ -68,6 +77,7 @@ window.utils = (function () {
     getRandomElementsFromArray: getRandomElementsFromArray,
     isEscCode: isEscCode,
     isEnterCode: isEnterCode,
-    removeClassFromAll: removeClassFromAll
+    removeClassFromAll: removeClassFromAll,
+    isChecked: isChecked
   };
 })();

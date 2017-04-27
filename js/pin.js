@@ -4,9 +4,15 @@
 window.pin = (function () {
   var offerDialog = document.getElementById('offer-dialog');
 
+
   var renderPins = function (container, properties) {
+    var previousPins = document.querySelectorAll('.pin:not(.pin__main)');
     var fragment = document.createDocumentFragment();
     var pins = [];
+
+    for (var i = 0; i < previousPins.length; i++) {
+      container.removeChild(previousPins[i]);
+    }
 
     properties.forEach(function (property) {
       var pin = createPin(property);
@@ -50,6 +56,6 @@ window.pin = (function () {
   }
 
   return {
-    render: renderPins,
+    render: renderPins
   };
 })();
