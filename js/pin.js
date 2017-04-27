@@ -1,8 +1,11 @@
 // pin.js
 'use strict';
 
-window.render = (function () {
-  var createPins = function (properties) {
+window.pin = (function () {
+  var offerDialog = document.getElementById('offer-dialog');
+
+  var renderPins = function (container, properties) {
+    var fragment = document.createDocumentFragment();
     var pins = [];
 
     properties.forEach(function (property) {
@@ -11,10 +14,15 @@ window.render = (function () {
       pins.push(pin);
     });
 
-    return pins;
+    pins.forEach(function (it, i) {
+      window.showCard(it, offerDialog, properties[i], openDialog);
+      fragment.appendChild(it);
+    });
+
+    container.appendChild(fragment);
   };
 
-  var createPin = function (property) {
+  function createPin(property) {
     var pin = document.createElement('div');
     var avatarImage = document.createElement('img');
 
@@ -32,20 +40,16 @@ window.render = (function () {
     pin.appendChild(avatarImage);
 
     return pin;
-  };
+  }
 
-  var renderPins = function (container, pinElements) {
-    var fragment = document.createDocumentFragment();
-
-    pinElements.forEach(function (element) {
-      fragment.appendChild(element);
-    });
-
-    container.appendChild(fragment);
-  };
+  function openDialog(pin, property) {
+    window.utils.removeClassFromAll('pin--active');
+    pin.classList.add('pin--active');
+    offerDialog.classList.remove('hidden');
+    window.card.renderPropertyElement(property);
+  }
 
   return {
-    createPins: createPins,
-    renderPins: renderPins
+    render: renderPins,
   };
 })();

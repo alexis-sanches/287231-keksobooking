@@ -53,12 +53,21 @@ window.utils = (function () {
     return false;
   };
 
+  var removeClassFromAll = function(nameOfClass) {
+    var array = document.querySelectorAll('.' + nameOfClass);
+
+    array.forEach(function (it) {
+      it.classList.remove(nameOfClass);
+    });
+  };
+
   return {
     getRandomNumber: getRandomNumber,
     getRandomArrayElement: getRandomArrayElement,
     getRandomArrayIndex: getRandomArrayIndex,
     getRandomElementsFromArray: getRandomElementsFromArray,
     isEscCode: isEscCode,
-    isEnterCode: isEnterCode
+    isEnterCode: isEnterCode,
+    removeClassFromAll: removeClassFromAll
   };
 })();

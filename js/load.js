@@ -15,42 +15,42 @@ window.load = (function () {
   var load = function (url, onLoad) {
     var xhr = new XMLHttpRequest();
 
+    var RESPONSE_TYPES = {
+      200: onLoad,
+      400: 'Неверный запрос',
+      401: 'Пользователь не авторизован',
+      404: 'Ничего не найдено'
+    };
+
+    var TIMEOUT = 10000;
+    var UNKNOWN_ERROR = 'Произошла неизвестная ошибка: ' + xhr.status + xhr.statusText;
+    var CONNECTION_ERROR = 'Произошла ошибка соединения';
+    var TIMEOUT_ERROR = 'Запрос не успел выполниться за ' + TIMEOUT + ' мс';
+
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       var error;
-
-      switch (xhr.status) {
-        case 200:
-          onLoad(xhr.response);
-          break;
-        case 400:
-          error = 'Неверный запрос';
-          break;
-        case 401:
-          error = 'Пользователь не авторизован';
-          break;
-        case 404:
-          error = 'Ничего не найдено';
-          break;
-        default:
-          error = 'Неизвестный статус: ' + xhr.status + ' ' + xhr.statusText;
-          break;
-      }
-      if (error) {
-        onError(error);
+      if (RESPONSE_TYPES[xhr.status]) {
+        if (xhr.status === 200) {
+          RESPONSE_TYPES[xhr.status](xhr.response);
+        } else {
+          onError(RESPONSE_TYPES[xhr.status]);
+        }
+      } else {
+        onError(UNKNOWN_ERROR);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onError(CONNECTION_ERROR);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + ' мс');
+      onError(TIMEOUT_ERROR);
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT;
 
     xhr.open('GET', url);
     xhr.send();
