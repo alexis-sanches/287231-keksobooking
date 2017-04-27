@@ -20,8 +20,8 @@ window.pin = (function () {
       pins.push(pin);
     });
 
-    pins.forEach(function (it, i) {
-      window.showCard(it, offerDialog, properties[i], openDialog);
+    pins.forEach(function (it, index) {
+      window.showCard(it, offerDialog, properties[index], openDialog);
       fragment.appendChild(it);
     });
 

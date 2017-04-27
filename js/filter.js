@@ -41,7 +41,7 @@ window.filterProperties = (function () {
       return array.filter(function (it) {
         if (!filters[feature]) {
 
-          return true
+          return true;
         }
 
         return it.offer.features.includes(feature);
@@ -65,6 +65,6 @@ window.filterProperties = (function () {
       return true;
     });
 
-    return properties
+    return properties;
   };
 })();
