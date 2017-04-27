@@ -52,18 +52,6 @@
     renderPins(response);
   }
 
-  function filterPins(evt) {
-    if (evt.target.tagName === 'SELECT') {
-      filters[Object.keys(filters)[i]] = evt.target.value;
-    } else if (evt.target.checked) {
-      filters[Object.keys(filters)[i]] = true;
-    } else {
-      filters[Object.keys(filters)[i]] = false;
-    }
-
-    renderPins(response);
-  }
-
   function renderPins(response) {
     properties = window.filterProperties(response, filters);
 

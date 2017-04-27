@@ -14,47 +14,41 @@ window.filterProperties = (function () {
     };
 
     var filtersList = {
-      type: optionFilter('type', array, filters),
-      price: priceFilter(array, filters),
-      rooms: optionFilter('rooms', array, filters),
-      guests: optionFilter('guests', array, filters),
-      wifi: featureFilter('wifi', array, filters),
-      dishwasher: featureFilter('dishwasher', array, filters),
-      parking: featureFilter('parking', array, filters),
-      washer: featureFilter('washer', array, filters),
-      elevator: featureFilter('elevator', array, filters),
-      conditioner: featureFilter('conditioner', array, filters),
+      type: optionFilter('type'),
+      price: priceFilter(),
+      rooms: optionFilter('rooms'),
+      guests: optionFilter('guests'),
+      wifi: featureFilter('wifi'),
+      dishwasher: featureFilter('dishwasher'),
+      parking: featureFilter('parking'),
+      washer: featureFilter('washer'),
+      elevator: featureFilter('elevator'),
+      conditioner: featureFilter('conditioner'),
     };
 
-    function optionFilter(option, array, filters) {
-      var filteredArray = array.filter(function (it) {
+    function optionFilter(option) {
+      return array.filter(function (it) {
         if (filters[option] === 'any') {
 
           return true;
-        } else {
+        }
 
-          return it.offer[option] === +filters[option];
-        };
+        return it.offer[option] === +filters[option];
       });
-
-      return filteredArray;
     }
 
-    function featureFilter(feature, array, filters) {
-      var filteredArray = array.filter(function (it) {
+    function featureFilter(feature) {
+      return array.filter(function (it) {
         if (!filters[feature]) {
 
           return true
-        } else {
-
-          return it.offer.features.includes(feature);
         }
-      });
 
-      return filteredArray;
+        return it.offer.features.includes(feature);
+      });
     }
 
-    function priceFilter(array, filters) {
+    function priceFilter() {
       return array.filter(function (it) {
         return it.offer.price > PRICES[filters.price][0] && it.offer.price <= PRICES[filters.price][1];
       });
