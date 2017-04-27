@@ -23,7 +23,6 @@ window.load = (function () {
       switch (xhr.status) {
         case 200:
           onLoad(xhr.response);
-          console.log(xhr.response);
           break;
         case 400:
           error = 'Неверный запрос';
