@@ -1,8 +1,15 @@
 // filter.js
 'use strict';
 
-window.filterProperties = (function () {
-  return function (array, filters) {
+window.filter = (function () {
+  return function (array) {
+    var tokyoFilters = document.querySelector('.tokyo__filters');
+    var type = tokyoFilters.querySelector('#housing_type');
+    var price = tokyoFilters.querySelector('#housing_price');
+    var rooms = tokyoFilters.querySelector('#housing_room-number');
+    var guests = tokyoFilters.querySelector('#housing_guests-number');
+    var features = tokyoFilters.querySelectorAll('#housing_features input');
+
     var MAX_PRICE = Math.max.apply(Math, array.map(function (it) {
       return it.offer.price;
     }));
@@ -13,50 +20,49 @@ window.filterProperties = (function () {
       low: [0, 10000]
     };
 
-    var filtersList = {
-      type: optionFilter('type'),
+    var filters = {
+      type: optionFilter(type),
       price: priceFilter(),
-      rooms: optionFilter('rooms'),
-      guests: optionFilter('guests'),
-      wifi: featureFilter('wifi'),
-      dishwasher: featureFilter('dishwasher'),
-      parking: featureFilter('parking'),
-      washer: featureFilter('washer'),
-      elevator: featureFilter('elevator'),
-      conditioner: featureFilter('conditioner'),
+      rooms: optionFilter(rooms),
+      guests: optionFilter(guests),
+      features: featuresFilter(features)
     };
 
     function optionFilter(option) {
       return array.filter(function (it) {
-        if (filters[option] === 'any') {
+        if (option.value === 'any') {
 
           return true;
         }
 
-        return it.offer[option] === +filters[option];
-      });
-    }
-
-    function featureFilter(feature) {
-      return array.filter(function (it) {
-        if (!filters[feature]) {
-
-          return true;
-        }
-
-        return it.offer.features.includes(feature);
+        return it.offer[option] === +option.value;
       });
     }
 
     function priceFilter() {
       return array.filter(function (it) {
-        return it.offer.price > PRICES[filters.price][0] && it.offer.price <= PRICES[filters.price][1];
+        return it.offer.price > PRICES[price.value][0] && it.offer.price <= PRICES[price.value][1];
       });
     }
 
-    var properties = array.filter(function (it) {
-      for (var filter in filtersList) {
-        if (!filtersList[filter].includes(it)) {
+    function featuresFilter(features) {
+      for (var i = 0; i < features.length; i++) {
+        array = array.filter(function (it) {
+          if (window.utils.isChecked(features[i])) {
+
+            return it.offer.features.includes(features[i].value);
+          }
+
+          return true;
+        });
+      }
+
+      return array;
+    }
+
+    return array.filter(function (it) {
+      for (var filter in filters) {
+        if (!filters[filter].includes(it)) {
 
           return false;
         }
@@ -64,7 +70,5 @@ window.filterProperties = (function () {
 
       return true;
     });
-
-    return properties;
   };
 })();
