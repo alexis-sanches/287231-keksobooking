@@ -7,9 +7,9 @@ window.load = (function () {
     var errorMessage = document.createElement('p');
 
     errorContainer.classList.add('error');
-    errorMessage.textContent(error);
+    errorMessage.textContent = error;
     errorContainer.appendChild(errorMessage);
-    document.querySelector('body').appendChild(errorContainer);
+    document.body.appendChild(errorContainer);
   };
 
   var load = function (url, onLoad) {
@@ -23,9 +23,12 @@ window.load = (function () {
     };
 
     var TIMEOUT = 10000;
-    var UNKNOWN_ERROR = 'Произошла неизвестная ошибка: ' + xhr.status + xhr.statusText;
-    var CONNECTION_ERROR = 'Произошла ошибка соединения';
-    var TIMEOUT_ERROR = 'Запрос не успел выполниться за ' + TIMEOUT + ' мс';
+
+    var errors = {
+      unknown: 'Произошла неизвестная ошибка: ' + xhr.status + xhr.statusText,
+      conntection: 'Произошла ошибка соединения',
+      delay: 'Запрос не успел выполниться за ' + TIMEOUT + ' мс'
+    };
 
     xhr.responseType = 'json';
 
@@ -37,16 +40,16 @@ window.load = (function () {
           onError(RESPONSE_TYPES[xhr.status]);
         }
       } else {
-        onError(UNKNOWN_ERROR);
+        onError(errors.unknown);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError(CONNECTION_ERROR);
+      onError(errors.connection);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError(TIMEOUT_ERROR);
+      onError(errors.delay);
     });
 
     xhr.timeout = TIMEOUT;

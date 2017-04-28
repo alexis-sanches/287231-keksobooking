@@ -4,15 +4,18 @@
 window.showCard = (function () {
   return function (clickedElement, renderedElement, property, callback) {
     clickedElement.addEventListener('click', function (evt) {
-      renderedElement.classList.remove('hidden');
-      callback(clickedElement, property);
+      onPinClick(evt);
     });
 
     clickedElement.addEventListener('keydown', function (evt) {
       if (window.utils.isEnterCode(evt.keyCode)) {
-        renderedElement.classList.remove('hidden');
-        callback(clickedElement, property);
+        onPinClick(evt);
       }
     });
+
+    function onPinClick(evt) {
+      renderedElement.classList.remove('hidden');
+      callback(clickedElement, property);
+    }
   };
 })();

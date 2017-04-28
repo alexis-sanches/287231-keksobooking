@@ -21,7 +21,7 @@
     evt.preventDefault();
 
     if (!checkFormValidity()) {
-      addInvalidClass(noticeForm.elements);
+      window.utils.addInvalidClass(noticeForm.elements);
     } else {
       noticeForm.submit();
       noticeForm.reset();
@@ -61,13 +61,5 @@
     }
 
     return true;
-  }
-
-  function addInvalidClass(array) {
-    for (var i = 0; i < array.length; i++) {
-      if (!array[i].validity.valid) {
-        array[i].style.border = '2px solid red';
-      }
-    }
   }
 })();

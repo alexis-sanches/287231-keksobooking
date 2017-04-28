@@ -70,6 +70,14 @@ window.utils = (function () {
     return false;
   };
 
+  var addInvalidClass = function (array) {
+    for (var i = 0; i < array.length; i++) {
+      if (!array[i].validity.valid) {
+        array[i].style.border = '2px solid red';
+      }
+    }
+  };
+
   return {
     getRandomNumber: getRandomNumber,
     getRandomArrayElement: getRandomArrayElement,
@@ -78,6 +86,7 @@ window.utils = (function () {
     isEscCode: isEscCode,
     isEnterCode: isEnterCode,
     removeClassFromAll: removeClassFromAll,
-    isChecked: isChecked
+    isChecked: isChecked,
+    addInvalidClass: addInvalidClass
   };
 })();

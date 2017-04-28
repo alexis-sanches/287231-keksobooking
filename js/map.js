@@ -2,23 +2,20 @@
 'use strict';
 
 (function () {
-  var properties;
   var pinContainer = document.querySelector('.tokyo__pin-map');
   var tokyoFilters = document.querySelector('.tokyo__filters');
+
+  var DELAY_TIME = 500;
 
   window.load.getData('https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data', onLoad);
 
   function onLoad(response) {
     tokyoFilters.addEventListener('change', function () {
-      window.debounce(renderPins);
+      var properties = window.filter(response);
+
+      window.debounce(window.pin.render.bind(null, pinContainer, properties), DELAY_TIME);
     });
 
     window.pin.render(pinContainer, response.slice(0, 3));
-
-    function renderPins() {
-      properties = window.filter(response);
-
-      window.pin.render(pinContainer, properties);
-    }
   }
 })();

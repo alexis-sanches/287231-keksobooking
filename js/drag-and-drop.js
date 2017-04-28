@@ -50,6 +50,11 @@
     pinMain.addEventListener('mouseup', onMouseUp);
   });
 
+  /* В ТЗ сказано, что поле должно быть readonly, но в качестве дополнительного задания
+   * можно было реализовать изменение координат пина при изменении поля. Не считайте это
+   * несоответствием ТЗ.
+   */
+   
   addressOfProperty.addEventListener('change', function (evt) {
     var split = evt.target.value.split(', ');
 
