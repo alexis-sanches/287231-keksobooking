@@ -13,7 +13,7 @@
       window.debounce(renderPins);
     });
 
-    renderPins();
+    window.pin.render(pinContainer, response.slice(0, 3));
 
     function renderPins() {
       properties = window.filter(response);

@@ -3,7 +3,7 @@
 
 window.pin = (function () {
   var offerDialog = document.getElementById('offer-dialog');
-
+  var PIN_IMAGE_SIZE = 40
 
   var renderPins = function (container, properties) {
     var previousPins = document.querySelectorAll('.pin:not(.pin__main)');
@@ -39,8 +39,8 @@ window.pin = (function () {
 
     avatarImage.className = 'rounded';
     avatarImage.src = property.author.avatar;
-    avatarImage.width = 40;
-    avatarImage.height = 40;
+    avatarImage.width = PIN_IMAGE_SIZE;
+    avatarImage.height = PIN_IMAGE_SIZE;
     avatarImage.tabIndex = 0;
 
     pin.appendChild(avatarImage);
