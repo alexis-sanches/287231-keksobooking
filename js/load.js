@@ -40,7 +40,7 @@ window.load = (function () {
           onError(RESPONSE_TYPES[xhr.status]);
         }
       } else {
-        onError(errors.unknown);
+        onError(ERRORS.unknown);
       }
     });
 
