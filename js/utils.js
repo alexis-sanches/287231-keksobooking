@@ -53,12 +53,40 @@ window.utils = (function () {
     return false;
   };
 
+  var removeClassFromAll = function (nameOfClass) {
+    var array = document.querySelectorAll('.' + nameOfClass);
+
+    array.forEach(function (it) {
+      it.classList.remove(nameOfClass);
+    });
+  };
+
+  var isChecked = function (checkbox) {
+    if (checkbox.checked) {
+
+      return true;
+    }
+
+    return false;
+  };
+
+  var addInvalidClass = function (array) {
+    for (var i = 0; i < array.length; i++) {
+      if (!array[i].validity.valid) {
+        array[i].style.border = '2px solid red';
+      }
+    }
+  };
+
   return {
     getRandomNumber: getRandomNumber,
     getRandomArrayElement: getRandomArrayElement,
     getRandomArrayIndex: getRandomArrayIndex,
     getRandomElementsFromArray: getRandomElementsFromArray,
     isEscCode: isEscCode,
-    isEnterCode: isEnterCode
+    isEnterCode: isEnterCode,
+    removeClassFromAll: removeClassFromAll,
+    isChecked: isChecked,
+    addInvalidClass: addInvalidClass
   };
 })();

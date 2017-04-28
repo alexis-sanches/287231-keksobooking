@@ -1,9 +1,18 @@
 // pin.js
 'use strict';
 
-window.render = (function () {
-  var createPins = function (properties) {
+window.pin = (function () {
+  var offerDialog = document.getElementById('offer-dialog');
+  var PIN_IMAGE_SIZE = 40;
+
+  var renderPins = function (container, properties) {
+    var previousPins = document.querySelectorAll('.pin:not(.pin__main)');
+    var fragment = document.createDocumentFragment();
     var pins = [];
+
+    for (var i = 0; i < previousPins.length; i++) {
+      container.removeChild(previousPins[i]);
+    }
 
     properties.forEach(function (property) {
       var pin = createPin(property);
@@ -11,10 +20,15 @@ window.render = (function () {
       pins.push(pin);
     });
 
-    return pins;
+    pins.forEach(function (it, index) {
+      window.showCard(it, offerDialog, properties[index], openDialog);
+      fragment.appendChild(it);
+    });
+
+    container.appendChild(fragment);
   };
 
-  var createPin = function (property) {
+  function createPin(property) {
     var pin = document.createElement('div');
     var avatarImage = document.createElement('img');
 
@@ -25,27 +39,23 @@ window.render = (function () {
 
     avatarImage.className = 'rounded';
     avatarImage.src = property.author.avatar;
-    avatarImage.width = 40;
-    avatarImage.height = 40;
+    avatarImage.width = PIN_IMAGE_SIZE;
+    avatarImage.height = PIN_IMAGE_SIZE;
     avatarImage.tabIndex = 0;
 
     pin.appendChild(avatarImage);
 
     return pin;
-  };
+  }
 
-  var renderPins = function (container, pinElements) {
-    var fragment = document.createDocumentFragment();
-
-    pinElements.forEach(function (element) {
-      fragment.appendChild(element);
-    });
-
-    container.appendChild(fragment);
-  };
+  function openDialog(pin, property) {
+    window.utils.removeClassFromAll('pin--active');
+    pin.classList.add('pin--active');
+    offerDialog.classList.remove('hidden');
+    window.card.renderPropertyElement(property);
+  }
 
   return {
-    createPins: createPins,
-    renderPins: renderPins
+    render: renderPins
   };
 })();
