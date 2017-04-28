@@ -58,14 +58,14 @@ window.filter = (function () {
         }
 
         return arr;
-      }
+      };
     }
 
     return [typeFilter,
       priceFilter,
       roomsFilter,
       guestsFilter,
-      featuresFilter(features)].reduce(function(prev, filter) {
+      featuresFilter(features)].reduce(function (prev, filter) {
         return filter(prev);
       }, array);
 
