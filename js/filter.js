@@ -21,21 +21,28 @@ window.filter = (function () {
     };
 
     var filters = {
-      type: optionFilter(type),
+      type: typeFilter(),
       price: priceFilter(),
-      rooms: optionFilter(rooms),
-      guests: optionFilter(guests),
+      rooms: roomsFilter(),
+      guests: guestsFilter(),
       features: featuresFilter(features)
     };
 
-    function optionFilter(option) {
+    function typeFilter() {
       return array.filter(function (it) {
-        if (option.value === 'any') {
+        return type.value === 'any' ? true : it.offer.type === type.value;
+      });
+    }
 
-          return true;
-        }
+    function guestsFilter() {
+      return array.filter(function (it) {
+        return guests.value === 'any' ? true : it.offer.guests === +guests.value;
+      });
+    }
 
-        return it.offer[option] === +option.value;
+    function roomsFilter() {
+      return array.filter(function (it) {
+        return rooms.value === 'any' ? true : it.offer.rooms === +rooms.value;
       });
     }
 
