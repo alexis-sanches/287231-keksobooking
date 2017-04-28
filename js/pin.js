@@ -3,7 +3,7 @@
 
 window.pin = (function () {
   var offerDialog = document.getElementById('offer-dialog');
-  var PIN_IMAGE_SIZE = 40
+  var PIN_IMAGE_SIZE = 40;
 
   var renderPins = function (container, properties) {
     var previousPins = document.querySelectorAll('.pin:not(.pin__main)');

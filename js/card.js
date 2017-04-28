@@ -42,7 +42,7 @@ window.card = (function () {
     var lodgeCheckin = element.querySelector('.lodge__checkin-time');
     var lodgeFeatures = element.querySelector('.lodge__features');
     var lodgeDescription = element.querySelector('.lodge__description');
-    var lodgePhotos = element.querySelector('.lodge__photos')
+    var lodgePhotos = element.querySelector('.lodge__photos');
     var dialogImage = document.querySelector('.dialog__title > img');
 
     lodgeTitle.textContent = property.offer.title;
