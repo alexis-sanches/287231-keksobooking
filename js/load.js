@@ -40,16 +40,16 @@ window.load = (function () {
           onError(RESPONSE_TYPES[xhr.status]);
         }
       } else {
-        onError(ERRORS.unknown);
+        onError(ERRORS.UNKNOWN);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError(ERRORS.connection);
+      onError(ERRORS.CONNECTION);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError(ERRORS.delay);
+      onError(ERRORS.DELAY);
     });
 
     xhr.timeout = TIMEOUT;
