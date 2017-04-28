@@ -45,12 +45,12 @@ window.filter = (function () {
       });
     }
 
-    function featuresFilter(features) {
-      for (var i = 0; i < features.length; i++) {
+    function featuresFilter(featuresList) {
+      for (var i = 0; i < featuresList.length; i++) {
         array = array.filter(function (it) {
-          if (window.utils.isChecked(features[i])) {
+          if (window.utils.isChecked(featuresList[i])) {
 
-            return it.offer.features.includes(features[i].value);
+            return it.offer.features.includes(featuresList[i].value);
           }
 
           return true;
