@@ -25,9 +25,9 @@ window.load = (function () {
     var TIMEOUT = 10000;
 
     var ERRORS = {
-      unknown: 'Произошла неизвестная ошибка: ' + xhr.status + xhr.statusText,
-      conntection: 'Произошла ошибка соединения',
-      delay: 'Запрос не успел выполниться за ' + TIMEOUT + ' мс'
+      UNKNOWN: 'Произошла неизвестная ошибка: ' + xhr.status + xhr.statusText,
+      CONNECTION: 'Произошла ошибка соединения',
+      DELAY: 'Запрос не успел выполниться за ' + TIMEOUT + ' мс'
     };
 
     xhr.responseType = 'json';

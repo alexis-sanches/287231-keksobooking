@@ -6,9 +6,9 @@ window.card = (function () {
   var dialogClose = offerDialog.querySelector('.dialog__close');
 
   var PROPERTY_TYPE_TRANSLATIONS = {
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalo: 'Бунгало'
+    FLAT: 'Квартира',
+    HOUSE: 'Дом',
+    BUNGALO: 'Бунгало'
   };
 
   var IMAGE_WIDTH = 52;
@@ -48,7 +48,7 @@ window.card = (function () {
     lodgeTitle.textContent = property.offer.title;
     lodgeAddress.textContent = property.offer.address;
     lodgePrice.textContent = property.offer.price + ' ₽/ночь';
-    lodgeType.textContent = PROPERTY_TYPE_TRANSLATIONS[property.offer.type];
+    lodgeType.textContent = PROPERTY_TYPE_TRANSLATIONS[property.offer.type.toUpperCase()];
     lodgeRoomsAndGuests.textContent = 'Для ' + property.offer.guests + ' гостей в ' + property.offer.rooms + ' комнатах';
     lodgeCheckin.textContent = 'Заезд после ' + property.offer.checkin + ', выезд до ' + property.offer.checkout;
     lodgeFeatures.appendChild(createFeaturesElement(property.offer.features));
