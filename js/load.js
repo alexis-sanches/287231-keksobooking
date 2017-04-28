@@ -24,7 +24,7 @@ window.load = (function () {
 
     var TIMEOUT = 10000;
 
-    var errors = {
+    var ERRORS = {
       unknown: 'Произошла неизвестная ошибка: ' + xhr.status + xhr.statusText,
       conntection: 'Произошла ошибка соединения',
       delay: 'Запрос не успел выполниться за ' + TIMEOUT + ' мс'
@@ -45,11 +45,11 @@ window.load = (function () {
     });
 
     xhr.addEventListener('error', function () {
-      onError(errors.connection);
+      onError(ERRORS.connection);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError(errors.delay);
+      onError(ERRORS.delay);
     });
 
     xhr.timeout = TIMEOUT;

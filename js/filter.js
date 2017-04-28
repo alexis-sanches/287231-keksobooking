@@ -34,7 +34,9 @@ window.filter = (function () {
 
     function roomsFilter(arr) {
       return arr.filter(function (it) {
-        return rooms.value === 'any' ? true : it.offer.rooms === +rooms.value;
+        return rooms.value === 'any'
+          ? true
+          : it.offer.rooms === +rooms.value;
       });
     }
 
