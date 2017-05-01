@@ -14,10 +14,6 @@ window.pin = (function () {
       container.removeChild(it);
     });
 
-    for (var i = 0; i < previousPins.length; i++) {
-
-    }
-
     properties.forEach(function (property) {
       var pin = createPin(property);
 

@@ -55,7 +55,7 @@
 
   function checkFormValidity() {
     [].some.call(noticeForm.elements, function (it) {
-      !it.checkValidity();
+      return !it.checkValidity();
     });
   }
 })();
