@@ -50,16 +50,12 @@
 
   function syncPrices(element, value) {
     element.value = value;
-    element.min = value;
+    element.placeholder = value;
   }
 
   function checkFormValidity() {
-    for (var i = 0; i < noticeForm.elements.length; i++) {
-      if (!noticeForm.elements[i].checkValidity()) {
-        return false;
-      }
-    }
-
-    return true;
+    [].some.call(noticeForm.elements, function (it) {
+      !it.checkValidity();
+    });
   }
 })();

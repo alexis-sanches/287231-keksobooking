@@ -42,22 +42,21 @@ window.filter = (function () {
 
     function priceFilter(arr) {
       return arr.filter(function (it) {
-        return it.offer.price > PRICES[price.value][0] && it.offer.price <= PRICES[price.value][1];
+        return price.value === 'any'
+          ? true
+          : it.offer.price > PRICES[price.value][0] && it.offer.price <= PRICES[price.value][1];
       });
     }
 
     function featuresFilter(featuresList) {
       return function (arr) {
-        for (var i = 0; i < featuresList.length; i++) {
+        featuresList.forEach(function (feature) {
           arr = arr.filter(function (it) {
-            if (window.utils.isChecked(featuresList[i])) {
-
-              return it.offer.features.includes(featuresList[i].value);
-            }
-
-            return true;
+            return window.utils.isChecked(feature)
+              ? it.offer.features.includes(feature.value)
+              : true;
           });
-        }
+        });
 
         return arr;
       };

@@ -10,8 +10,12 @@ window.pin = (function () {
     var fragment = document.createDocumentFragment();
     var pins = [];
 
+    [].forEach.call(previousPins, function (it) {
+      container.removeChild(it);
+    });
+
     for (var i = 0; i < previousPins.length; i++) {
-      container.removeChild(previousPins[i]);
+
     }
 
     properties.forEach(function (property) {
