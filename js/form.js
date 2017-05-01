@@ -49,7 +49,7 @@
   }
 
   function syncPrices(element, value) {
-    element.value = value;
+    element.min = value;
     element.placeholder = value;
   }
 
